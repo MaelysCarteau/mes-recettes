@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mes Recettes</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FAF8F3;
+    --card: #FFFFFF;
+    --text: #1A1A18;
+    --muted: #8A8880;
+    --accent: #C8A96E;
+    --accent-light: #F5EDD8;
+    --green: #3D6B4F;
+    --green-light: #E6F0EA;
+    --border: #E8E4DB;
+    --tag-bg: #F0EDE6;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  /* HEADER */
+  header {
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); }
+  .logo-mark { width: 36px; height: 36px; background: var(--text); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+  .logo-mark svg { width: 20px; height: 20px; fill: var(--bg); }
+  .logo-name { font-family: 'Playfair Display', serif; font-size: 1.2rem; letter-spacing: -0.01em; }
+  .header-count { font-size: 0.8rem; color: var(--muted); background: var(--tag-bg); padding: 4px 10px; border-radius: 20px; }
+
+  /* HERO */
+  .hero {
+    padding: 3rem 2rem 2rem;
+    max-width: 900px; margin: 0 auto;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+  .hero h1 em { font-style: italic; color: var(--accent); }
+  .hero p { color: var(--muted); font-size: 1rem; font-weight: 300; }
+
+  /* SEARCH & FILTERS */
+  .controls {
+    max-width: 900px; margin: 0 auto;
+    padding: 1.5rem 2rem;
+    display: flex; flex-direction: column; gap: 1rem;
+  }
+  .search-wrap { position: relative; }
+  .search-wrap svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; stroke: var(--muted); fill: none; }
+  #search {
+    width: 100%;
+    padding: 12px 16px 12px 42px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    background: var(--card);
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  #search:focus { border-color: var(--accent); }
+  #search::placeholder { color: var(--muted); }
+
+  .filters { display: flex; gap: 8px; flex-wrap: wrap; }
+  .filter-btn {
+    padding: 6px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    background: var(--card);
+    color: var(--muted);
+    transition: all 0.15s;
+  }
+  .filter-btn:hover { border-color: var(--accent); color: var(--text); }
+  .filter-btn.active { background: var(--text); border-color: var(--text); color: var(--bg); }
+
+  /* GRID */
+  .grid-section { max-width: 900px; margin: 0 auto; padding: 0 2rem 4rem; }
+  .results-info { font-size: 0.8rem; color: var(--muted); margin-bottom: 1.2rem; }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 16px;
+  }
+
+  /* CARD */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+  .card-thumb {
+    height: 100px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.8rem;
+    position: relative;
+  }
+  .card-thumb.color-1 { background: #F5EDD8; }
+  .card-thumb.color-2 { background: #E6F0EA; }
+  .card-thumb.color-3 { background: #F0E8F5; }
+  .card-thumb.color-4 { background: #E8EFF5; }
+  .card-thumb.color-5 { background: #F5E8E8; }
+  .card-thumb.color-6 { background: #E8F5F2; }
+  .card-body { padding: 14px 16px; }
+  .card-tag {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    line-height: 1.3;
+    margin-bottom: 10px;
+    color: var(--text);
+  }
+  .card-meta { display: flex; align-items: center; gap: 8px; }
+  .meta-pill {
+    font-size: 0.72rem;
+    padding: 3px 9px;
+    border-radius: 10px;
+    background: var(--tag-bg);
+    color: var(--muted);
+  }
+  .meta-pill.veg { background: var(--green-light); color: var(--green); }
+
+  /* NO RESULTS */
+  .no-results { text-align: center; padding: 4rem 2rem; color: var(--muted); }
+  .no-results span { font-size: 2.5rem; display: block; margin-bottom: 1rem; }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 200;
+    background: rgba(26,26,24,0.6);
+    backdrop-filter: blur(4px);
+    display: none; align-items: center; justify-content: center;
+    padding: 1rem;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--card);
+    border-radius: 18px;
+    max-width: 620px; width: 100%;
+    max-height: 88vh;
+    overflow-y: auto;
+    animation: slideUp 0.25s ease;
+  }
+  @keyframes slideUp { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }
+  .modal-header {
+    padding: 1.5rem 1.5rem 1rem;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem;
+  }
+  .modal-thumb { font-size: 2.5rem; margin-bottom: 4px; }
+  .modal-tag { font-size: 0.7rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.07em; color: var(--accent); margin-bottom: 6px; }
+  .modal-title { font-family: 'Playfair Display', serif; font-size: 1.5rem; line-height: 1.2; color: var(--text); }
+  .modal-close {
+    background: var(--tag-bg); border: none; cursor: pointer;
+    width: 32px; height: 32px; border-radius: 50%; font-size: 1.1rem;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--muted); flex-shrink: 0; margin-top: 4px;
+    transition: background 0.15s;
+  }
+  .modal-close:hover { background: var(--border); }
+  .modal-body { padding: 1.5rem; }
+  .modal-section { margin-bottom: 1.5rem; }
+  .modal-section h3 {
+    font-size: 0.72rem; font-weight: 500; text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--muted);
+    margin-bottom: 0.75rem; padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+  .ingredients-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .ingredients-list li {
+    font-size: 0.9rem; padding: 6px 10px;
+    background: var(--bg); border-radius: 8px;
+    display: flex; align-items: center; gap: 8px;
+    line-height: 1.4;
+  }
+  .ingredients-list li::before { content: '·'; color: var(--accent); font-size: 1.2rem; flex-shrink: 0; }
+  .steps-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .steps-list li { display: flex; gap: 12px; font-size: 0.9rem; line-height: 1.6; }
+  .step-num {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--accent-light); color: var(--accent);
+    font-size: 0.75rem; font-weight: 600;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 2px;
+  }
+  .modal-note {
+    background: var(--bg); border-left: 3px solid var(--accent);
+    padding: 10px 14px; border-radius: 0 8px 8px 0;
+    font-size: 0.85rem; color: var(--muted); font-style: italic;
+    margin-top: 0.5rem;
+  }
+  .source-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 0.8rem; color: var(--accent); text-decoration: none;
+    padding: 6px 12px; border: 1px solid var(--accent-light);
+    border-radius: 8px; margin-top: 0.5rem;
+    transition: background 0.15s;
+  }
+  .source-link:hover { background: var(--accent-light); }
+
+  /* SCROLLBAR */
+  .modal::-webkit-scrollbar { width: 6px; }
+  .modal::-webkit-scrollbar-track { background: transparent; }
+  .modal::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="#" class="logo" onclick="return false">
+    <div class="logo-mark">
+      <svg viewBox="0 0 24 24"><path d="M18.06 22.99h1.66c.84 0 1.53-.64 1.63-1.46L23 5.05h-5V1h-1.97v4.05h-4.97l.3 2.34c1.71.47 3.31 1.32 4.27 2.26 1.44 1.42 2.43 2.89 2.43 5.29v8.05zM1 21.99V21h15.03v.99c0 .55-.45 1-1.01 1H2.01c-.56 0-1.01-.45-1.01-1zm15.03-7c0-4.5-7.5-5-7.5-5s-7.5.5-7.5 5h15z"/></svg>
+    </div>
+    <span class="logo-name">Mes Recettes</span>
+  </a>
+  <span class="header-count" id="header-count">37 recettes</span>
+</header>
+
+<div class="hero">
+  <h1>Toutes mes recettes,<br><em>au même endroit.</em></h1>
+  <p>Retrouvez vos recettes préférées sauvegardées depuis Instagram.</p>
+</div>
+
+<div class="controls">
+  <div class="search-wrap">
+    <svg viewBox="0 0 24 24" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input type="text" id="search" placeholder="Rechercher une recette, un ingrédient…">
+  </div>
+  <div class="filters" id="filters">
+    <button class="filter-btn active" data-tag="Toutes">Toutes</button>
+    <button class="filter-btn" data-tag="Végétarien">🌱 Végétarien</button>
+    <button class="filter-btn" data-tag="Plat">🍽 Plats</button>
+    <button class="filter-btn" data-tag="Salade">🥗 Salades</button>
+    <button class="filter-btn" data-tag="Soupe">🍵 Soupes</button>
+    <button class="filter-btn" data-tag="Quiche / Tarte">🥧 Quiches & Tartes</button>
+    <button class="filter-btn" data-tag="Dessert">🍮 Desserts</button>
+    <button class="filter-btn" data-tag="Entrée / Apéro">🥚 Entrées</button>
+    <button class="filter-btn" data-tag="Rapide">⚡ Rapide</button>
+  </div>
+</div>
+
+<div class="grid-section">
+  <p class="results-info" id="results-info"></p>
+  <div class="grid" id="grid"></div>
+  <div class="no-results" id="no-results" style="display:none">
+    <span>🔍</span>Aucune recette trouvée pour cette recherche.
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-thumb" id="m-thumb"></div>
+        <div class="modal-tag" id="m-tag"></div>
+        <div class="modal-title" id="m-title"></div>
+      </div>
+      <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    </div>
+    <div class="modal-body" id="m-body"></div>
+  </div>
+</div>
+
+<script>
+const RECIPES = [
+  {
+    id: 1,
+    title: "Salade de gyozas au miso",
+    emoji: "🥟",
+    color: "color-4",
+    tag: "Salade",
+    veg: false,
+    time: "20 min",
+    source: "https://www.instagram.com/reel/DXHsbSMiAlq/",
+    video: "videos/recette-1.mp4",
+    ingredients: [
+      "12 gyozas (légumes ou poulet)",
+      "2 carottes",
+      "1/2 concombre",
+      "1/4 de chou rouge",
+      "100 g d'edamames cuits",
+      "2 cébettes",
+      "1 gousse d'ail",
+      "1 càs de miso blanc",
+      "2 càs d'huile d'olive",
+      "1 càs de miel",
+      "Jus d'1/2 citron vert",
+      "Graines de sésame",
+      "Huile pimentée"
+    ],
+    steps: [
+      "Couper les carottes en julienne, le concombre en fines lamelles et émincer le chou rouge.",
+      "Cuire les edamames. Émincer les cébettes et râper l'ail.",
+      "Préparer la vinaigrette : mélanger le miso, l'huile d'olive, le miel et le jus de citron vert.",
+      "Faire griller les gyozas à la poêle ou à l'airfryer à 180°C pendant 8–10 min.",
+      "Ajouter les gyozas à la salade, verser la sauce et bien mélanger.",
+      "Terminer avec les graines de sésame et un filet d'huile pimentée."
+    ],
+    note: "Prête en moins de 20 minutes, fraîche, croquante et avec une sauce au miso addictive."
+  },
+  {
+    id: 2,
+    title: "Salade fraîcheur pomme de terre & tzatziki",
+    emoji: "🥔",
+    color: "color-2",
+    tag: "Salade",
+    veg: true,
+    time: "35 min",
+    source: "https://www.instagram.com/reel/DXPXDxBiDMS/",
+    video: "videos/recette-2.mp4",
+    ingredients: [
+      "200 g de pommes de terre",
+      "1 càs d'herbes de Provence",
+      "1 concombre",
+      "2 càs de yaourt grec",
+      "1/2 jus de citron",
+      "1 càs d'huile d'olive",
+      "1 oignon",
+      "Tomates"
+    ],
+    steps: [
+      "Éplucher et couper les pommes de terre. Les assaisonner avec de l'huile d'olive et des herbes de Provence, puis cuire à 200°C pendant 25 min.",
+      "Râper le concombre dans un bol, ajouter le yaourt grec, de l'aneth, le jus de citron et l'huile d'olive.",
+      "Assembler : pommes de terre, l'autre demi concombre, les tomates et la sauce.",
+      "Déguster !"
+    ]
+  },
+  {
+    id: 3,
+    title: "Carbo veggie aux courgettes",
+    emoji: "🍝",
+    color: "color-1",
+    tag: "Plat",
+    veg: true,
+    time: "25 min",
+    source: "https://www.instagram.com/reel/DXR_8SZCA-2/",
+    video: "videos/recette-3.mp4",
+    ingredients: [
+      "2 courgettes",
+      "200 g de pâtes",
+      "50 g de pecorino râpé",
+      "1 œuf entier + 2 jaunes",
+      "Huile d'olive",
+      "Poivre"
+    ],
+    steps: [
+      "Faire revenir les courgettes coupées en demi-rondelles dans de l'huile d'olive.",
+      "Cuire les pâtes al dente et réserver de l'eau de cuisson.",
+      "Dans un bol, mélanger les œufs, le pecorino râpé, beaucoup de poivre et un peu d'eau de cuisson.",
+      "Dans la poêle des courgettes, ajouter les pâtes égouttées, les courgettes et incorporer la mixture petit à petit en remuant jusqu'à obtenir une texture crémeuse.",
+      "Déguster immédiatement."
+    ]
+  },
+  {
+    id: 4,
+    title: "One pot fregola printanier",
+    emoji: "🌿",
+    color: "color-2",
+    tag: "Plat",
+    veg: true,
+    time: "20 min",
+    source: "https://www.instagram.com/reel/DWPHnmtiFBb/",
+    video: "videos/recette-4.mp4",
+    ingredients: [
+      "120 g de fregola ou orzo",
+      "1/2 oignon",
+      "1 gousse d'ail",
+      "1 sucrine",
+      "80 g de petits pois frais ou surgelés",
+      "500 ml de bouillon de légumes",
+      "80 g de Boursin (fromage aillé)",
+      "Zestes d'1/2 citron",
+      "1 càs d'huile d'olive",
+      "Sel, poivre",
+      "2 jaunes d'œufs (pour servir)",
+      "Parmesan râpé"
+    ],
+    steps: [
+      "Émincer l'oignon et l'ail. Faire revenir dans l'huile d'olive 2-3 min.",
+      "Ajouter la fregola, mélanger puis verser le bouillon. Cuire à feu moyen 10 min en remuant régulièrement.",
+      "Ajouter la sucrine coupée et les petits pois.",
+      "Incorporer le Boursin et mélanger jusqu'à obtenir une texture bien crémeuse.",
+      "Ajouter les zestes de citron, saler, poivrer.",
+      "Servir chaud avec un jaune d'œuf et du parmesan."
+    ],
+    note: "Ajuster la texture avec un peu d'eau ou de bouillon si besoin — ça doit être crémeux mais pas sec."
+  },
+  {
+    id: 5,
+    title: "Dahl de lentilles corail",
+    emoji: "🍛",
+    color: "color-5",
+    tag: "Plat",
+    veg: true,
+    time: "40 min",
+    source: "https://www.instagram.com/reel/DW6rcaRITFR/",
+    video: "videos/recette-5.mp4",
+    ingredients: [
+      "200 g de lentilles corail",
+      "1 gros oignon",
+      "Carottes",
+      "Sauce tomate",
+      "Lait de coco",
+      "Eau",
+      "Ail",
+      "Paprika fumé",
+      "Curry madras",
+      "Curry jaune",
+      "Sel",
+      "Riz basmati, noix de cajou, coriandre, sriracha pour servir"
+    ],
+    steps: [
+      "Faire revenir l'oignon émincé avec l'ail dans une casserole.",
+      "Ajouter les carottes coupées en rondelles et les épices (paprika, curry madras, curry jaune). Bien mélanger.",
+      "Ajouter les lentilles rincées, la sauce tomate, le lait de coco et l'eau. Saler.",
+      "Laisser mijoter à feu doux environ 20-25 min jusqu'à ce que les lentilles soient fondantes.",
+      "Servir sur du riz basmati avec des noix de cajou, de la coriandre fraîche et de la sriracha."
+    ]
+  },
+  {
+    id: 6,
+    title: "5 repas anti-inflammatoires",
+    emoji: "🌿",
+    color: "color-2",
+    tag: "Plat",
+    veg: true,
+    time: "Variable",
+    source: "https://www.instagram.com/reel/DW02IlSDDS8/",
+    ingredients: [
+      "— Smoothie : épinards, banane, kiwi, ananas, protéines vanille, lait d'avoine, gingembre, curcuma",
+      "— Salade quinoa : quinoa, carottes & patate douce rôties, oignon rouge, haricots blancs, chou rouge, feta, grenade, menthe",
+      "— Salade carottes : carottes, feta, grenade, persil + vinaigrette miel-curcuma",
+      "— Curry de pois chiches : pois chiches, sauce tomate, lait de coco, curry, curcuma, cumin, coriandre",
+      "— Tacos bowl : riz complet, haché végétal, patate douce rôtie, avocat, mâche, pain pita, labné"
+    ],
+    steps: [
+      "Smoothie : mixer tous les ingrédients ensemble.",
+      "Salade quinoa : rôtir les légumes au four, cuire le quinoa, assembler avec la vinaigrette (vinaigre de cidre, citron, miel, huile d'olive, gingembre, curcuma, sésame).",
+      "Salade carottes : préparer les carottes en lamelles et mélanger avec la feta, la grenade et la vinaigrette.",
+      "Curry pois chiches : faire revenir les pois chiches avec les épices, la sauce tomate et le lait de coco. Servir avec du riz complet.",
+      "Tacos bowl : rôtir la patate douce, assembler tous les éléments dans un bol."
+    ]
+  },
+  {
+    id: 7,
+    title: "Gaufres salées à la courgette",
+    emoji: "🧇",
+    color: "color-2",
+    tag: "Plat",
+    veg: true,
+    time: "20 min",
+    source: "https://www.instagram.com/reel/DWcalQcCLEA/",
+    video: "videos/recette-7.mp4",
+    ingredients: [
+      "2 grosses courgettes râpées",
+      "3 œufs",
+      "120 g de farine",
+      "50 g de parmesan râpé",
+      "10 cl de lait (ou végétal)",
+      "1 sachet de levure chimique",
+      "Sel, poivre",
+      "Ciboulette, basilic, persil",
+      "1 càs d'huile d'olive"
+    ],
+    steps: [
+      "Râper les courgettes, les mettre dans un torchon et bien presser pour enlever l'excès d'eau.",
+      "Mélanger les œufs, le lait et l'huile d'olive.",
+      "Ajouter la farine, la levure, le parmesan, sel et poivre.",
+      "Incorporer les courgettes pressées et les herbes ciselées.",
+      "Cuire dans le gaufrier 4–5 min jusqu'à ce qu'elles soient bien dorées."
+    ],
+    note: "Étape cruciale : bien presser les courgettes sinon les gaufres seront molles !"
+  },
+  {
+    id: 8,
+    title: "Pain de lentilles corail (type lepinja)",
+    emoji: "🫓",
+    color: "color-1",
+    tag: "Rapide",
+    veg: true,
+    time: "15 min",
+    source: "https://www.instagram.com/reel/DTIQkc5DBnk/",
+    video: "videos/recette-8.mp4",
+    ingredients: [
+      "2 tasses de lentilles corail",
+      "1/2 tasse d'eau",
+      "Sel"
+    ],
+    steps: [
+      "Faire tremper les lentilles corail plusieurs heures (idéalement toute la nuit).",
+      "Placer les lentilles égouttées, l'eau et le sel dans un blender.",
+      "Mixer jusqu'à obtenir une pâte lisse.",
+      "Cuire sur une poêle antiadhésive jusqu'à ce que ce soit doré des deux côtés."
+    ]
+  },
+  {
+    id: 9,
+    title: "Pain burger magique aux lentilles",
+    emoji: "🍔",
+    color: "color-1",
+    tag: "Rapide",
+    veg: true,
+    time: "45 min",
+    source: "https://www.instagram.com/reel/DU3YVoljNI8/",
+    ingredients: [
+      "200 g de lentilles corail sèches (tremper quelques heures puis égoutter)",
+      "2 œufs (ou 2 càs de graines de lin mixées + 6 càs d'eau)",
+      "3 càs de psyllium",
+      "Sel"
+    ],
+    steps: [
+      "Laisser tremper les lentilles corail quelques heures ou toute la nuit, puis égoutter.",
+      "Mixer ensemble les lentilles, les œufs (ou le substitut), le psyllium et le sel.",
+      "Former des boules (environ 4 grosses).",
+      "Enfourner à 180°C pendant 35 min."
+    ],
+    note: "Ultra moelleux ! Sans gluten si on utilise les graines de lin à la place des œufs."
+  },
+  {
+    id: 10,
+    title: "Pizza express œuf-cottage cheese",
+    emoji: "🍕",
+    color: "color-5",
+    tag: "Rapide",
+    veg: true,
+    time: "30 min",
+    source: "https://www.instagram.com/reel/DWWz1o6jART/",
+    video: "videos/recette-10.mp4",
+    ingredients: [
+      "2 œufs",
+      "200 g de cottage cheese",
+      "Garnitures au choix (sauce tomate, fromage, légumes…)"
+    ],
+    steps: [
+      "Mélanger les œufs et le cottage cheese.",
+      "Étaler la préparation sur une plaque de cuisson.",
+      "Enfourner à 180°C pendant 25-30 min.",
+      "Garnir la galette/crêpe comme souhaité."
+    ]
+  },
+  {
+    id: 11,
+    title: "Wraps maison aux épinards",
+    emoji: "🌯",
+    color: "color-2",
+    tag: "Rapide",
+    veg: true,
+    time: "30 min",
+    source: "https://www.instagram.com/reel/DT-o_3fjNqS/",
+    video: "videos/recette-11.mp4",
+    ingredients: [
+      "100 g d'épinards frais",
+      "100 ml d'eau",
+      "2 càs d'huile",
+      "3 œufs",
+      "200 g de farine",
+      "Sel, poivre"
+    ],
+    steps: [
+      "Mixer les épinards avec l'eau jusqu'à obtenir un liquide vert homogène.",
+      "Ajouter les œufs, l'huile, la farine, le sel et le poivre. Mélanger jusqu'à obtenir une pâte lisse.",
+      "Cuire dans une poêle chaude légèrement huilée, comme des crêpes.",
+      "Garnir selon les envies."
+    ]
+  },
+  {
+    id: 12,
+    title: "Galettes de lentilles corail",
+    emoji: "🫓",
+    color: "color-1",
+    tag: "Végétarien",
+    veg: true,
+    time: "40 min",
+    source: "https://www.instagram.com/reel/DV3Iq_CIb3N/",
+    video: "videos/recette-12.mp4",
+    ingredients: [
+      "300 g de lentilles corail",
+      "1 carotte",
+      "1 oignon blanc",
+      "1 pomme de terre",
+      "500 ml d'eau",
+      "100 g de fécule de maïs",
+      "2 càs de sauce soja",
+      "1 càc de paprika fumé",
+      "1 càc d'herbes de Provence",
+      "Sel et poivre"
+    ],
+    steps: [
+      "Rincer les lentilles. Les cuire avec l'eau, la carotte, l'oignon et la pomme de terre.",
+      "Une fois cuit, écraser ou mixer grossièrement.",
+      "Ajouter la fécule, la sauce soja, le paprika, les herbes, sel et poivre.",
+      "Former des galettes et les cuire à la poêle avec un peu d'huile jusqu'à dorure."
+    ]
+  },
+  {
+    id: 13,
+    title: "Pancakes fitness banane-avoine",
+    emoji: "🥞",
+    color: "color-1",
+    tag: "Rapide",
+    veg: true,
+    time: "15 min",
+    source: "https://www.instagram.com/reel/DWRd-9HsSrq/",
+    ingredients: [
+      "100 g de flocons d'avoine",
+      "2 bananes bien mûres",
+      "200 ml d'eau ou lait végétal",
+      "Option : moitié flocons / moitié farine de blé + 1 càc de levure"
+    ],
+    steps: [
+      "Mixer les flocons d'avoine, les bananes et le lait végétal jusqu'à obtenir une pâte homogène.",
+      "Cuire dans une poêle antiadhésive légèrement huilée à feu moyen.",
+      "Retourner quand des bulles se forment en surface."
+    ]
+  },
+  {
+    id: 14,
+    title: "Pizza de lentilles corail",
+    emoji: "🍕",
+    color: "color-5",
+    tag: "Végétarien",
+    veg: true,
+    time: "35 min",
+    source: "https://www.instagram.com/reel/DVipBKhjIHO/",
+    ingredients: [
+      "200 g de lentilles corail",
+      "220 ml d'eau",
+      "Haché végétal",
+      "200 g de sauce tomate",
+      "100 g de fromage râpé végétal",
+      "4 champignons de Paris",
+      "Rondelles d'oignon rouge"
+    ],
+    steps: [
+      "Mixer les lentilles corail (préalablement trempées) avec l'eau pour obtenir une pâte lisse.",
+      "Étaler sur une plaque de cuisson et enfourner à 180°C environ 20 min.",
+      "Garnir avec la sauce tomate, le haché végétal, les champignons, l'oignon rouge et le fromage.",
+      "Remettre au four 10-15 min jusqu'à ce que le fromage soit fondu."
+    ]
+  },
+  {
+    id: 15,
+    title: "Assiette healthy girl (riz sushi)",
+    emoji: "🍱",
+    color: "color-4",
+    tag: "Plat",
+    veg: false,
+    time: "25 min",
+    source: "https://www.instagram.com/reel/DWZSxM9uaWD/",
+    ingredients: [
+      "60 g de riz à sushi cru",
+      "1 carotte",
+      "2-3 champignons",
+      "1/2 avocat",
+      "2 œufs coréens marinés (Mayak eggs)",
+      "1-2 feuilles d'algues nori"
+    ],
+    steps: [
+      "Cuire le riz à sushi selon les instructions.",
+      "Râper la carotte, couper les champignons en lamelles et l'avocat en tranches.",
+      "Couper les feuilles de nori en petits carrés.",
+      "Assembler l'assiette avec tous les éléments.",
+      "Servir avec les œufs coréens marinés (recette séparée)."
+    ]
+  },
+  {
+    id: 16,
+    title: "Raviolis de poireaux aux champignons",
+    emoji: "🥬",
+    color: "color-2",
+    tag: "Végétarien",
+    veg: true,
+    time: "35 min",
+    source: "https://www.instagram.com/reel/DWMcIY1jJe_/",
+    ingredients: [
+      "3 gros poireaux",
+      "1 oignon",
+      "400 g de champignons",
+      "Persil frais",
+      "Crème de soja",
+      "Sel et poivre",
+      "Emmental râpé"
+    ],
+    steps: [
+      "Faire revenir l'oignon émincé avec les champignons coupés jusqu'à dorure.",
+      "Ajouter la crème de soja, le persil, sel et poivre. Réserver la farce.",
+      "Couper le pied et le haut des poireaux, les plonger dans l'eau bouillante.",
+      "Faire une incision sur la longueur et récupérer les grandes lamelles.",
+      "Disposer deux lamelles en croix, ajouter la farce au centre et refermer en forme de ravioli.",
+      "Faire revenir à la poêle avec l'emmental sur le dessus. Couvrir pour faire fondre."
+    ]
+  },
+  {
+    id: 17,
+    title: "Nouilles sautées aux légumes",
+    emoji: "🍜",
+    color: "color-4",
+    tag: "Plat",
+    veg: false,
+    time: "20 min",
+    source: "https://www.instagram.com/reel/DV_pnDuDPnR/",
+    ingredients: [
+      "3 portions de nouilles",
+      "1 oignon",
+      "1 carotte",
+      "1/2 poivron rouge + 1/2 poivron vert",
+      "2 gousses d'ail",
+      "Gingembre frais",
+      "Champignons",
+      "3 càs sauce soja salée",
+      "1 càs sauce soja foncée",
+      "2 càs sauce huître",
+      "1 càs huile de sésame",
+      "Coriandre et oignon vert pour servir"
+    ],
+    steps: [
+      "Cuire les nouilles selon les instructions, égoutter et réserver.",
+      "Dans un wok très chaud avec de l'huile, faire sauter l'ail et le gingembre râpés.",
+      "Ajouter les légumes (oignon, carotte, poivrons, champignons) et faire sauter à feu vif.",
+      "Incorporer les sauces (soja salée, soja foncée, huître) et l'eau. Bien mélanger.",
+      "Ajouter les nouilles cuites et l'huile de sésame. Faire sauter encore 2 min.",
+      "Servir avec de la coriandre et de l'oignon vert."
+    ]
+  },
+  {
+    id: 18,
+    title: "Les nems maison",
+    emoji: "🍡",
+    color: "color-1",
+    tag: "Plat",
+    veg: false,
+    time: "1h",
+    source: "https://www.instagram.com/reel/DWL4c9KDH-5/",
+    ingredients: [
+      "1 carotte râpée",
+      "20 g de champignons noirs réhydratés",
+      "20 g de pousses de soja",
+      "1 grosse échalote",
+      "2 gousses d'ail",
+      "400 g de viande hachée (porc ou poulet)",
+      "100 g de vermicelles de riz",
+      "2 œufs",
+      "1 cube de bouillon",
+      "Sauce soja, sauce de poisson",
+      "Feuilles de riz, huile de friture",
+      "Sauce nem : nuoc-mâm, eau, citron, sucre, ail, piment"
+    ],
+    steps: [
+      "Réhydrater les champignons noirs et les vermicelles. Couper en petits morceaux.",
+      "Mélanger viande, légumes, vermicelles, œufs, cube émietté, sauce soja et sauce de poisson.",
+      "Ramollir les feuilles de riz dans l'eau. Placer une cuillère de farce et rouler en serrant bien.",
+      "Faire frire dans l'huile chaude jusqu'à dorure.",
+      "Sauce nem : mélanger le nuoc-mâm, l'eau tiède, le jus de citron, le sucre, l'ail et le piment.",
+      "Servir avec des feuilles de salade et la sauce nem."
+    ]
+  },
+  {
+    id: 19,
+    title: "Omelette roulée à la patate douce",
+    emoji: "🥚",
+    color: "color-1",
+    tag: "Rapide",
+    veg: true,
+    time: "15 min",
+    source: "https://www.instagram.com/reel/DUjE_lyAmeo/",
+    ingredients: [
+      "75 g de patate douce crue en lamelles très fines",
+      "2 œufs",
+      "Parmesan ou emmental râpé",
+      "Sel, poivre",
+      "Ciboulette",
+      "Graines de sésame",
+      "Sirop d'érable"
+    ],
+    steps: [
+      "Chauffer une petite poêle légèrement graissée à feu doux.",
+      "Faire revenir les lamelles de patate douce jusqu'à ce qu'elles soient tendres.",
+      "Verser les œufs battus avec le fromage, le sel, le poivre et les herbes. Laisser prendre doucement.",
+      "Rouler l'omelette délicatement.",
+      "Parsemer de graines de sésame et arroser d'un filet de sirop d'érable."
+    ],
+    note: "Feu doux impératif pour laisser le temps à la patate douce de cuire sans brûler."
+  },
+  {
+    id: 20,
+    title: "Salade sweet chili tofu & pois chiches croustillants",
+    emoji: "🥗",
+    color: "color-6",
+    tag: "Salade",
+    veg: true,
+    time: "45 min",
+    source: "https://www.instagram.com/reel/DWMQeTfo_6O/",
+    ingredients: [
+      "1/3 concombre",
+      "100 g d'edamame",
+      "1/2 avocat",
+      "2 oignons nouveaux",
+      "400 g de tofu (marinade : ketchup, skyr, sauce soja, curry, ail en poudre, cumin, maïzena)",
+      "240 g de pois chiches (huile, sirop d'érable, garam masala, paprika, sel)",
+      "Dressing : skyr, mayonnaise, sauce sweet chili, persil, ciboulette, ail"
+    ],
+    steps: [
+      "Mariner le tofu dans le ketchup, le skyr, la sauce soja et les épices. Laisser 30 min min, puis enrober de maïzena.",
+      "Mélanger les pois chiches avec l'huile, le sirop d'érable et les épices. Cuire 20 min à 180°C en remuant régulièrement.",
+      "Faire cuire le tofu croustillant à la poêle ou à l'airfryer.",
+      "Préparer le dressing en mélangeant tous ses ingrédients.",
+      "Assembler la salade avec tous les légumes et arroser de dressing."
+    ]
+  },
+  {
+    id: 21,
+    title: "Ramen lait de coco, miso & cacahuète",
+    emoji: "🍜",
+    color: "color-4",
+    tag: "Plat",
+    veg: true,
+    time: "30 min",
+    source: "https://www.instagram.com/reel/DV_jEVBiNEM/",
+    ingredients: [
+      "2 portions de nouilles ramen",
+      "3 poignées de cébettes",
+      "2 gousses d'ail",
+      "1 càs gingembre en poudre",
+      "1 grosse càs miso blanc",
+      "1,5 càs beurre de cacahuète lisse",
+      "1 càs tahini",
+      "400 ml lait de coco",
+      "1 L bouillon de légumes",
+      "Sauce soja + jus de citron vert",
+      "200 g tofu ferme (paprika, sirop d'érable)",
+      "Cébettes fraîches, sésame, huile pimentée"
+    ],
+    steps: [
+      "Faire revenir les cébettes et l'ail dans l'huile d'olive et l'huile de piment.",
+      "Ajouter le miso, le beurre de cacahuète et le tahini. Bien mélanger.",
+      "Verser le lait de coco et le bouillon. Ajouter la sauce soja, le jus de citron vert. Laisser mijoter.",
+      "Couper le tofu en cubes, l'enrober de paprika et sirop d'érable, faire dorer à la poêle.",
+      "Cuire les nouilles ramen selon les instructions.",
+      "Assembler les bols : nouilles, bouillon chaud, tofu, cébettes, sésame et huile pimentée."
+    ],
+    note: "Un ramen réconfortant avec un mélange coco-miso-cacahuète absolument divin."
+  },
+  {
+    id: 22,
+    title: "Soupe tomate & haloumi rôti miel-citron",
+    emoji: "🍅",
+    color: "color-5",
+    tag: "Soupe",
+    veg: true,
+    time: "35 min",
+    source: "https://www.instagram.com/reel/DWJKUphDCVj/",
+    ingredients: [
+      "1 boîte de tomates pelées (400 g)",
+      "240 g de haricots blancs égouttés",
+      "1 oignon",
+      "2 gousses d'ail",
+      "Sel, poivre, origan",
+      "200 g de haloumi",
+      "Sauce miel-citron : 1 càs miel, jus d'1/2 citron, origan, sel, piment en flocons"
+    ],
+    steps: [
+      "Faire revenir l'oignon émincé dans une casserole. Ajouter l'ail.",
+      "Ajouter les tomates pelées écrasées grossièrement, puis les haricots blancs.",
+      "Assaisonner avec sel, poivre et origan. Laisser mijoter 15-20 min.",
+      "Mixer selon la texture souhaitée.",
+      "Couper le haloumi en tranches épaisses, le tremper dans l'eau bouillante puis le faire dorer à la poêle.",
+      "Hors du feu, verser la sauce miel-citron sur le haloumi.",
+      "Servir la soupe chaude avec le haloumi par-dessus."
+    ]
+  },
+  {
+    id: 23,
+    title: "Galette d'edamame & pesto de cavolo nero",
+    emoji: "💚",
+    color: "color-2",
+    tag: "Végétarien",
+    veg: true,
+    time: "40 min",
+    source: "https://www.instagram.com/reel/DWLvIcsjNRe/",
+    ingredients: [
+      "120 g d'edamames surgelés",
+      "40 g de parmesan râpé",
+      "1 œuf",
+      "1 poignée de salade verte",
+      "Pesto : 120 g de cavolo nero, 30 g de parmesan, 20 g de poudre d'amande, 20 g d'huile d'olive, 50 g de cottage cheese, 1 gousse d'ail, sel"
+    ],
+    steps: [
+      "Préchauffer le four à 200°C.",
+      "Mixer l'edamame avec le parmesan. Étaler en galette sur une plaque chemisée. Enfourner 25 min.",
+      "Plonger le cavolo nero 45 sec dans l'eau bouillante salée. Refroidir immédiatement sous l'eau froide, essorer.",
+      "Mixer le cavolo avec le parmesan, la poudre d'amande, l'huile d'olive, le cottage cheese, l'ail et le sel pour obtenir un pesto épais.",
+      "Détendre une partie du pesto avec de l'eau et du citron pour faire une sauce.",
+      "Servir la galette avec un œuf au plat, la salade et le pesto."
+    ]
+  },
+  {
+    id: 24,
+    title: "Steak de chou-fleur, crème de poivron & lentilles crispy",
+    emoji: "🥦",
+    color: "color-2",
+    tag: "Végétarien",
+    veg: true,
+    time: "50 min",
+    source: "https://www.instagram.com/reel/DO2-GQhjBZ-/",
+    ingredients: [
+      "1 chou-fleur",
+      "1 càc paprika",
+      "2 gousses d'ail",
+      "3 càs huile d'olive",
+      "200 g de lentilles sèches",
+      "70 g de feta",
+      "Persil et basilic frais, citron",
+      "Crème de poivron : 150 g poivrons en bocal, 60 g tomates séchées, 1 gousse d'ail, crème balsamique, huile d'olive, 20 g amandes, jus de citron"
+    ],
+    steps: [
+      "Préchauffer le four à 200°C. Cuire les lentilles selon le paquet.",
+      "Mélanger ail râpé, paprika, huile d'olive, sel et poivre. Badigeonner les steaks de chou-fleur et enfourner 30 min.",
+      "Étaler les lentilles cuites sur une plaque, assaisonner et enfourner aussi 30 min pour les rendre croustillantes.",
+      "Mixer tous les ingrédients de la crème de poivron. Saler, poivrer.",
+      "Mélanger basilic, persil, feta émiettée, jus de citron et huile d'olive.",
+      "Dresser : sauce dans le fond, steak de chou-fleur, lentilles crispy et mélange feta-herbes."
+    ]
+  },
+  {
+    id: 25,
+    title: "Mayak eggs (œufs marinés coréens)",
+    emoji: "🥚",
+    color: "color-5",
+    tag: "Entrée / Apéro",
+    veg: false,
+    time: "20 min + marinade",
+    source: "https://www.instagram.com/reel/DVrothpjE10/",
+    ingredients: [
+      "8 œufs",
+      "150 ml de sauce soja",
+      "150 ml d'eau",
+      "1,5 càs de miel",
+      "2 gousses d'ail",
+      "1 gros bout de gingembre",
+      "2 cébettes",
+      "1 càc de flocons de piment",
+      "1,5 càs de graines de sésame"
+    ],
+    steps: [
+      "Cuire les œufs 7 minutes dans l'eau bouillante avec un filet de vinaigre.",
+      "Préparer la marinade : mélanger sauce soja, eau, miel, ail émincé, gingembre râpé, cébettes, piment et sésame.",
+      "Plonger les œufs dans un bain de glace pour stopper la cuisson. Écaler délicatement.",
+      "Plonger les œufs dans la marinade dans un récipient fermé.",
+      "Mariner au frigo au moins 3h, idéalement toute une nuit.",
+      "Servir sur du riz chaud."
+    ],
+    note: "Couvrir les œufs avec un papier absorbant pour bien les immerger dans la marinade."
+  },
+  {
+    id: 26,
+    title: "Bacon de tofu croustillant",
+    emoji: "🌱",
+    color: "color-2",
+    tag: "Végétarien",
+    veg: true,
+    time: "30 min",
+    source: "https://www.instagram.com/reel/DWMfZtSNs8a/",
+    ingredients: [
+      "1 bloc de tofu ferme (200 g)",
+      "2 càs d'huile d'olive",
+      "1 càs de sauce soja",
+      "1 càs de sirop d'érable",
+      "1 càs de concentré de tomates",
+      "1 càc de paprika fumé",
+      "Ail en poudre, poivre"
+    ],
+    steps: [
+      "Couper le tofu en fines tranches.",
+      "Mélanger tous les ingrédients pour faire la marinade.",
+      "Enrober les tranches de tofu et laisser mariner 10-30 min.",
+      "Disposer sur une plaque avec papier cuisson.",
+      "Enfourner à 180°C pendant 15-25 min jusqu'à ce que ce soit bien doré et légèrement croustillant."
+    ],
+    note: "Environ 550 kcal / 26 g de protéines pour l'ensemble de la recette."
+  },
+  {
+    id: 27,
+    title: "Tarte aux champignons de Cyril Lignac",
+    emoji: "🍄",
+    color: "color-1",
+    tag: "Quiche / Tarte",
+    veg: true,
+    time: "40 min",
+    source: "https://www.instagram.com/reel/DV8-DVHjUkt/",
+    ingredients: [
+      "1 pâte feuilletée",
+      "850 g de champignons de Paris",
+      "1 échalote",
+      "Sel",
+      "200 g de comté"
+    ],
+    steps: [
+      "Découper la pâte feuilletée en cercle avec une assiette. La cuire entre deux plaques 15 min à 200°C.",
+      "Hacher 500 g de champignons avec l'échalote. Faire fondre dans du beurre jusqu'à évaporation de l'eau.",
+      "Couper 350-400 g de champignons restants en lamelles et les faire dorer à la poêle.",
+      "Sur la pâte, déposer les tranches de comté, les champignons hachés, puis les champignons en lamelles.",
+      "Enfourner 5 min à 200°C."
+    ]
+  },
+  {
+    id: 28,
+    title: "Crumble aux pommes",
+    emoji: "🍎",
+    color: "color-5",
+    tag: "Dessert",
+    veg: true,
+    time: "1h",
+    source: "https://www.instagram.com/reel/DVwKq-ON7Qf/",
+    ingredients: [
+      "1,5 kg de pommes",
+      "Vanille en poudre, cannelle",
+      "2 càc de maïzena",
+      "1/2 jus de citron",
+      "150 g de farine",
+      "120 g de flocons d'avoine",
+      "150 g de beurre froid",
+      "120 g de sucre (vergeoise de préférence)",
+      "1 pincée de fleur de sel"
+    ],
+    steps: [
+      "Éplucher et couper les pommes en gros morceaux. Assaisonner avec vanille, cannelle, jus de citron et maïzena. Disposer dans un plat.",
+      "Mélanger farine, flocons d'avoine, beurre froid, sucre et fleur de sel dans un bol. Sabler entre les mains pour obtenir une texture granuleuse.",
+      "Disposer le crumble sur les pommes.",
+      "Enfourner 40-50 min à 180°C.",
+      "Servir tiède avec du fromage blanc, yaourt de soja ou glace à la vanille."
+    ],
+    note: "Le crumble doit se tenir mais rester granuleux — ne pas trop travailler la pâte."
+  },
+  {
+    id: 29,
+    title: "Œufs mimosa betterave-avocat",
+    emoji: "🥚",
+    color: "color-3",
+    tag: "Entrée / Apéro",
+    veg: true,
+    time: "30 min + 3h marinade",
+    source: "https://www.instagram.com/reel/DV1UP0EtTKr/",
+    ingredients: [
+      "5 œufs",
+      "1 avocat",
+      "Jus de betterave",
+      "Jus de citron",
+      "Sel et poivre",
+      "Ciboulette",
+      "Graines de grenade",
+      "Option : 1 càs de fromage à tartiner"
+    ],
+    steps: [
+      "Cuire les œufs 9 min, les refroidir et les écaler. Les plonger dans du jus de betterave pendant 3h minimum.",
+      "Couper les œufs en deux, récupérer les jaunes.",
+      "Écraser les jaunes avec l'avocat. Assaisonner au citron, sel et poivre.",
+      "Mettre la préparation dans une poche à douille cannelée.",
+      "Pocher dans les blancs, garnir de ciboulette et d'une graine de grenade."
+    ]
+  },
+  {
+    id: 30,
+    title: "Dip betterave-chèvre",
+    emoji: "🩷",
+    color: "color-3",
+    tag: "Entrée / Apéro",
+    veg: true,
+    time: "15 min",
+    source: "https://www.instagram.com/reel/DVZD5KpiInt/",
+    ingredients: [
+      "3-4 petites betteraves cuites",
+      "1 pot de chèvre frais",
+      "Sel, poivre",
+      "1/2 jus de citron jaune",
+      "1 càs d'huile d'olive",
+      "1 càc de miel",
+      "Eau ou jus de betterave",
+      "Ciboulette, pistaches, zaatar pour décorer"
+    ],
+    steps: [
+      "Couper les betteraves.",
+      "Mixer betterave et chèvre avec sel, poivre, jus de citron, miel et huile d'olive.",
+      "Ajuster la consistance avec un peu d'eau ou de jus de betterave.",
+      "Servir dans un bol avec zeste de citron, zaatar, ciboulette et pistaches.",
+      "Accompagner de pain, chips ou crackers."
+    ]
+  },
+  {
+    id: 31,
+    title: "Salade pomme de terre protéinée",
+    emoji: "🥗",
+    color: "color-1",
+    tag: "Salade",
+    veg: false,
+    time: "45 min",
+    source: "https://www.instagram.com/reel/DVgwYSrjbT-/",
+    ingredients: [
+      "400 g de pommes de terre",
+      "1 laitue romaine",
+      "1 carotte, 1/2 oignon rouge, 300 g de chou blanc",
+      "2 œufs mollets",
+      "4 tranches fines de poitrine de porc",
+      "Assaisonnement : sel, poivre, ail, paprika, huile, herbes de Provence",
+      "Sauce : cottage cheese, jus de citron, huile d'olive, vinaigre de riz, ail, sel, poivre"
+    ],
+    steps: [
+      "Assaisonner les pommes de terre et cuire 20 min à l'airfryer à 200°C (ou 35 min au four).",
+      "Faire griller le bacon 10 min à 200°C. Laisser refroidir puis hacher.",
+      "Râper la carotte et le chou, émincer l'oignon, mélanger avec le vinaigre de riz, sel, poivre et citron.",
+      "Cuire les œufs mollets 7 min, refroidir dans l'eau glacée.",
+      "Mixer tous les ingrédients de la sauce, ajuster avec un peu d'eau.",
+      "Assembler la lunchbox avec tous les éléments."
+    ]
+  },
+  {
+    id: 32,
+    title: "Focaccine pommes de terre & brocoli",
+    emoji: "🥦",
+    color: "color-2",
+    tag: "Végétarien",
+    veg: true,
+    time: "30 min",
+    source: "https://www.instagram.com/reel/DVeGenIjNkW/",
+    ingredients: [
+      "400 g de pommes de terre",
+      "150 g de brocolis",
+      "150 g de fécule de pommes de terre",
+      "80 g de fromage",
+      "2 càs d'huile",
+      "Sel et poivre"
+    ],
+    steps: [
+      "Cuire les pommes de terre et les brocolis.",
+      "Écraser les pommes de terre et mélanger avec les brocolis.",
+      "Ajouter la fécule, l'huile, le sel et le poivre.",
+      "Former des petites galettes avec le fromage placé au milieu.",
+      "Cuire dans une poêle jusqu'à ce qu'elles soient bien dorées."
+    ]
+  },
+  {
+    id: 33,
+    title: "Quiche tomate fond de patate",
+    emoji: "🍅",
+    color: "color-5",
+    tag: "Quiche / Tarte",
+    veg: true,
+    time: "55 min",
+    source: "https://www.instagram.com/reel/DVnn-_sjO-H/",
+    ingredients: [
+      "350 g de pommes de terre cuites écrasées",
+      "75 g de farine",
+      "50 g de comté râpé",
+      "Sel, poivre",
+      "3 œufs",
+      "5 cl de crème liquide",
+      "30 g de feta",
+      "Herbes fraîches (persil, aneth)",
+      "1 tomate cœur de bœuf"
+    ],
+    steps: [
+      "Mélanger la purée avec la farine, le comté, le sel et le poivre. Former une boule.",
+      "Graisser le moule, étaler la pâte et précuire 15 min à 180°C.",
+      "Battre les œufs avec la crème, la feta émiettée et les herbes hachées.",
+      "Verser sur le fond de tarte, déposer les tranches de tomate par-dessus.",
+      "Saler légèrement la tomate et enfourner 30 min à 180°C.",
+      "Patienter 5-10 min avant de démouler."
+    ]
+  },
+  {
+    id: 34,
+    title: "Quiche patate douce, kale & pleurotes",
+    emoji: "🧡",
+    color: "color-1",
+    tag: "Quiche / Tarte",
+    veg: true,
+    time: "1h30",
+    source: "https://www.instagram.com/reel/DRPtjemDOP7/",
+    ingredients: [
+      "400 g de chair de patate douce cuite",
+      "1 œuf + 60 g farine d'avoine + 80 g fromage râpé (pour la pâte)",
+      "400 g de kale",
+      "300 g de pleurotes",
+      "3 œufs + 3 blancs d'œufs",
+      "200 g de cottage cheese",
+      "Sel, muscade",
+      "100 g de fromage râpé"
+    ],
+    steps: [
+      "Cuire la patate douce (30-40 min au four côté chair). Récupérer 400 g de chair.",
+      "Mélanger avec 1 œuf, 60 g de farine d'avoine et 80 g de fromage. Étaler dans un moule. Cuire 25 min à 180°C.",
+      "Faire sauter les pleurotes puis ajouter le kale 2-3 min.",
+      "Mélanger 3 œufs, 3 blancs d'œufs, cottage cheese, fromage, sel et muscade.",
+      "Répartir les légumes sur le fond de tarte, verser l'appareil.",
+      "Cuire 25 min jusqu'à ce que la quiche soit bien prise et dorée."
+    ]
+  },
+  {
+    id: 35,
+    title: "Salade de fenouil, dattes & quinoa croustillant",
+    emoji: "🌿",
+    color: "color-6",
+    tag: "Salade",
+    veg: true,
+    time: "35 min",
+    source: "https://www.instagram.com/reel/DR45oIPiBO0/",
+    ingredients: [
+      "1 fenouil",
+      "1 oignon nouveau",
+      "3 dattes medjool",
+      "150 g de quinoa",
+      "Persil et menthe",
+      "80 g de tahini",
+      "80 ml d'eau",
+      "Jus d'1/2 citron",
+      "1 gousse d'ail",
+      "150 g de feta",
+      "1 avocat (optionnel)"
+    ],
+    steps: [
+      "Cuire le quinoa, puis l'étaler sur une plaque avec huile, sel et poivre. Enfourner 20 min à 200°C.",
+      "Émincer très finement le fenouil et l'oignon nouveau.",
+      "Dénoyauter et émincer finement les dattes.",
+      "Hacher finement le persil et la menthe.",
+      "Préparer la sauce : mélanger tahini, eau, ail râpé, citron, huile d'olive, sel et poivre.",
+      "Mélanger tous les éléments dans un saladier en émiettant la feta. Servir avec des tranches d'avocat."
+    ]
+  },
+  {
+    id: 36,
+    title: "Pancake géant poireaux, ricotta citron & pesto",
+    emoji: "🥞",
+    color: "color-2",
+    tag: "Plat",
+    veg: true,
+    time: "50 min",
+    source: "https://www.instagram.com/reel/DSSqMtWCM1P/",
+    ingredients: [
+      "2 poireaux",
+      "240 ml de lait",
+      "2 œufs",
+      "130 g de parmesan",
+      "90 g de farine",
+      "1 càs de zaatar (ou thym)",
+      "1 càs de moutarde à l'ancienne",
+      "250 g de ricotta",
+      "Jus d'1/2 citron",
+      "Pesto (roquette ou classique)"
+    ],
+    steps: [
+      "Émincer et faire revenir les poireaux au beurre avec le zaatar. Couvrir quelques minutes. Saler, poivrer.",
+      "Dans un saladier, fouetter les œufs avec le lait. Ajouter le parmesan râpé, la farine, la moutarde et les poireaux cuits.",
+      "Verser dans un moule chemisé et enfourner 30 min à 180°C.",
+      "Préparer la ricotta fouettée : mélanger ricotta, zestes et jus de citron, huile d'olive, sel et poivre.",
+      "Servir le pancake avec la ricotta et un peu de pesto."
+    ]
+  },
+  {
+    id: 37,
+    title: "Courgettes farcies œuf & feta",
+    emoji: "🥒",
+    color: "color-2",
+    tag: "Végétarien",
+    veg: true,
+    time: "30 min",
+    source: "https://www.instagram.com/reel/DTf7qGfCGaY/",
+    ingredients: [
+      "2 courgettes épaisses",
+      "4 œufs",
+      "1/2 feta",
+      "Persil",
+      "Mozzarella râpée"
+    ],
+    steps: [
+      "Préchauffer le four. Couper les courgettes en deux dans la longueur et évider légèrement.",
+      "Bien égoutter les courgettes dans un torchon pour enlever l'excès d'eau.",
+      "Garnir les courgettes avec la feta émiettée et le persil.",
+      "Casser un œuf dans chaque demie-courgette.",
+      "Parsemer de mozzarella râpée et enfourner jusqu'à ce que l'œuf soit cuit et le fromage doré."
+    ],
+    note: "Bien égoutter les courgettes dans un torchon avant cuisson — étape clé !"
+  }
+];
+
+const colors = ['color-1','color-2','color-3','color-4','color-5','color-6'];
+const tagEmojis = {
+  'Salade': '🥗', 'Plat': '🍽', 'Végétarien': '🌱', 'Soupe': '🍵',
+  'Quiche / Tarte': '🥧', 'Dessert': '🍮', 'Entrée / Apéro': '🥚', 'Rapide': '⚡'
+};
+
+let currentTag = 'Toutes';
+let currentSearch = '';
+
+function renderGrid() {
+  const grid = document.getElementById('grid');
+  const noRes = document.getElementById('no-results');
+  const info = document.getElementById('results-info');
+  const q = currentSearch.toLowerCase();
+  const filtered = RECIPES.filter(r => {
+    const matchTag = currentTag === 'Toutes' || r.tag === currentTag || (currentTag === 'Végétarien' && r.veg);
+    const matchSearch = !q || r.title.toLowerCase().includes(q) || r.ingredients.join(' ').toLowerCase().includes(q);
+    return matchTag && matchSearch;
+  });
+  info.textContent = filtered.length + ' recette' + (filtered.length > 1 ? 's' : '');
+  document.getElementById('header-count').textContent = RECIPES.length + ' recettes';
+  if (!filtered.length) { grid.innerHTML = ''; noRes.style.display = 'block'; return; }
+  noRes.style.display = 'none';
+  grid.innerHTML = filtered.map(r => `
+    <div class="card" onclick="openModal(${r.id})">
+      <div class="card-thumb ${r.color}">${r.emoji}</div>
+      <div class="card-body">
+        <div class="card-tag">${r.tag}</div>
+        <div class="card-title">${r.title}</div>
+        <div class="card-meta">
+          ${r.time ? `<span class="meta-pill">⏱ ${r.time}</span>` : ''}
+          ${r.veg ? `<span class="meta-pill veg">🌱 Végé</span>` : ''}
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openModal(id) {
+  const r = RECIPES.find(x => x.id === id);
+  if (!r) return;
+  document.getElementById('m-thumb').textContent = r.emoji;
+  document.getElementById('m-tag').textContent = r.tag + (r.time ? ' · ' + r.time : '');
+  document.getElementById('m-title').textContent = r.title;
+  const body = document.getElementById('m-body');
+  body.innerHTML = `
+    ${r.video ? `
+      <div class="modal-section">
+        <video controls style="width:100%; border-radius:10px; max-height:280px; background:#000;">
+          <source src="${r.video}" type="video/mp4">
+        </video>
+      </div>
+    ` : ''}
+    <div class="modal-section">
+      <h3>Ingrédients</h3>
+      <ul class="ingredients-list">
+        ${r.ingredients.map(i => `<li>${i}</li>`).join('')}
+      </ul>
+    </div>
+    <div class="modal-section">
+      <h3>Préparation</h3>
+      <ol class="steps-list">
+        ${r.steps.map((s, i) => `<li><span class="step-num">${i+1}</span><span>${s}</span></li>`).join('')}
+      </ol>
+      ${r.note ? `<div class="modal-note">💡 ${r.note}</div>` : ''}
+    </div>
+    ${r.source ? `<a href="${r.source}" target="_blank" class="source-link">↗ Voir le post Instagram original</a>` : ''}
+  `;
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modal-overlay')) closeModalDirect();
+}
+function closeModalDirect() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('search').addEventListener('input', e => {
+  currentSearch = e.target.value;
+  renderGrid();
+});
+
+document.getElementById('filters').addEventListener('click', e => {
+  const btn = e.target.closest('.filter-btn');
+  if (!btn) return;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentTag = btn.dataset.tag;
+  renderGrid();
+});
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalDirect(); });
+
+renderGrid();
+</script>
+</body>
+</html>
