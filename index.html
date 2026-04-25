@@ -140,7 +140,9 @@
   .card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
   .card-thumb {
     height: 100px;
-    display: flex; align-items: center; justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 2.8rem;
     position: relative;
   }
@@ -177,17 +179,23 @@
   }
   .meta-pill.veg { background: var(--green-light); color: var(--green); }
 
-  .card-thumb img,
-  .modal-thumb img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  .card-thumb.has-image {
+    height: auto;
+    background: none;
     display: block;
   }
 
-  .card-thumb.has-image {
-    padding: 0;
-    overflow: hidden;
+  .card-thumb.has-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .modal-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
   }
 
   .modal-thumb.has-image {
@@ -356,6 +364,7 @@ const RECIPES = [
     id: 1,
     title: "Salade de gyozas au miso",
     emoji: "🥟",
+    image: "images/recette-1.png",
     color: "color-4",
     tag: "Salade",
     veg: false,
@@ -389,8 +398,9 @@ const RECIPES = [
   },
   {
     id: 2,
-    title: "Salade fraîcheur pomme de terre & tzatziki",
+    title: "Salade pomme de terre & tzatziki",
     emoji: "🥔",
+    image: "images/recette-2.png",
     color: "color-2",
     tag: "Salade",
     veg: true,
@@ -418,6 +428,7 @@ const RECIPES = [
     id: 3,
     title: "Carbo veggie aux courgettes",
     emoji: "🍝",
+    image: "images/recette-3.png",
     color: "color-1",
     tag: "Plat",
     veg: true,
@@ -444,6 +455,7 @@ const RECIPES = [
     id: 4,
     title: "One pot fregola printanier",
     emoji: "🌿",
+    image: "images/recette-4.png",
     color: "color-2",
     tag: "Plat",
     veg: true,
@@ -478,6 +490,7 @@ const RECIPES = [
     id: 5,
     title: "Dahl de lentilles corail",
     emoji: "🍛",
+    image: "images/recette-5.png",
     color: "color-5",
     tag: "Plat",
     veg: true,
@@ -510,6 +523,7 @@ const RECIPES = [
     id: 6,
     title: "5 repas anti-inflammatoires",
     emoji: "🌿",
+    image: "images/recette-6.png",
     color: "color-2",
     tag: "Plat",
     veg: true,
@@ -534,6 +548,7 @@ const RECIPES = [
     id: 7,
     title: "Gaufres salées à la courgette",
     emoji: "🧇",
+    image: "images/recette-7.png",
     color: "color-2",
     tag: "Plat",
     veg: true,
@@ -564,6 +579,7 @@ const RECIPES = [
     id: 8,
     title: "Pain de lentilles corail (type lepinja)",
     emoji: "🫓",
+    image: "images/recette-8.png",
     color: "color-1",
     tag: "Rapide",
     veg: true,
@@ -584,7 +600,7 @@ const RECIPES = [
   },
   {
     id: 9,
-    title: "Pain burger magique aux lentilles",
+    title: "Pain burger aux lentilles corail",
     emoji: "🍔",
     color: "color-1",
     tag: "Rapide",
@@ -609,6 +625,7 @@ const RECIPES = [
     id: 10,
     title: "Pizza express œuf-cottage cheese",
     emoji: "🍕",
+    image: "images/recette-10.png",
     color: "color-5",
     tag: "Rapide",
     veg: true,
@@ -631,6 +648,7 @@ const RECIPES = [
     id: 11,
     title: "Wraps maison aux épinards",
     emoji: "🌯",
+    image: "images/recette-11.png",
     color: "color-2",
     tag: "Rapide",
     veg: true,
@@ -656,6 +674,7 @@ const RECIPES = [
     id: 12,
     title: "Galettes de lentilles corail",
     emoji: "🫓",
+    image: "images/recette-12.png",
     color: "color-1",
     tag: "Végétarien",
     veg: true,
@@ -683,8 +702,9 @@ const RECIPES = [
   },
   {
     id: 13,
-    title: "Pancakes fitness banane-avoine",
+    title: "Pancakes banane-avoine",
     emoji: "🥞",
+    image: "images/recette-13.png",
     color: "color-1",
     tag: "Rapide",
     veg: true,
@@ -707,6 +727,7 @@ const RECIPES = [
     id: 14,
     title: "Pizza de lentilles corail",
     emoji: "🍕",
+    image: "images/recette-14.png",
     color: "color-5",
     tag: "Végétarien",
     veg: true,
@@ -731,8 +752,9 @@ const RECIPES = [
   },
   {
     id: 15,
-    title: "Assiette healthy girl (riz sushi)",
+    title: "Salade asiatique riz crudités",
     emoji: "🍱",
+    image: "images/recette-15.png",
     color: "color-4",
     tag: "Plat",
     veg: false,
@@ -759,6 +781,7 @@ const RECIPES = [
     id: 16,
     title: "Raviolis de poireaux aux champignons",
     emoji: "🥬",
+    image: "images/recette-16.png",
     color: "color-2",
     tag: "Végétarien",
     veg: true,
@@ -787,6 +810,7 @@ const RECIPES = [
     id: 17,
     title: "Nouilles sautées aux légumes",
     emoji: "🍜",
+    image: "images/recette-17.png",
     color: "color-4",
     tag: "Plat",
     veg: false,
@@ -818,8 +842,9 @@ const RECIPES = [
   },
   {
     id: 18,
-    title: "Les nems maison",
+    title: "Nems",
     emoji: "🍡",
+    image: "images/recette-18.png",
     color: "color-1",
     tag: "Plat",
     veg: false,
@@ -853,6 +878,7 @@ const RECIPES = [
     id: 19,
     title: "Omelette roulée à la patate douce",
     emoji: "🥚",
+    image: "images/recette-19.png",
     color: "color-1",
     tag: "Rapide",
     veg: true,
@@ -881,6 +907,7 @@ const RECIPES = [
     id: 20,
     title: "Salade sweet chili tofu & pois chiches croustillants",
     emoji: "🥗",
+    image: "images/recette-20.png",
     color: "color-6",
     tag: "Salade",
     veg: true,
@@ -1083,7 +1110,7 @@ const RECIPES = [
   },
   {
     id: 27,
-    title: "Tarte aux champignons de Cyril Lignac",
+    title: "Tarte aux champignons",
     emoji: "🍄",
     color: "color-1",
     tag: "Quiche / Tarte",
@@ -1289,21 +1316,15 @@ const RECIPES = [
     video: "videos/recette-34.mp4",
     ingredients: [
       "400 g de chair de patate douce cuite",
-      "1 œuf + 60 g farine d'avoine + 80 g fromage râpé (pour la pâte)",
-      "400 g de kale",
-      "300 g de pleurotes",
-      "3 œufs + 3 blancs d'œufs",
-      "200 g de cottage cheese",
-      "Sel, muscade",
-      "100 g de fromage râpé"
+      "1 œuf",
+      "60 g farine",
+      "80 g fromage râpé"
     ],
     steps: [
+      "Préchauffer le four à 180°C.",
       "Cuire la patate douce (30-40 min au four côté chair). Récupérer 400 g de chair.",
-      "Mélanger avec 1 œuf, 60 g de farine d'avoine et 80 g de fromage. Étaler dans un moule. Cuire 25 min à 180°C.",
-      "Faire sauter les pleurotes puis ajouter le kale 2-3 min.",
-      "Mélanger 3 œufs, 3 blancs d'œufs, cottage cheese, fromage, sel et muscade.",
-      "Répartir les légumes sur le fond de tarte, verser l'appareil.",
-      "Cuire 25 min jusqu'à ce que la quiche soit bien prise et dorée."
+      "Mélanger avec l'œuf, la farine et le fromage.", 
+      "Étaler dans un moule. Cuire 25 min à 180°C."
     ]
   },
   {
