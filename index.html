@@ -814,6 +814,31 @@
     </div>
 
     <div class="form-field">
+      <label>Type de recette</label>
+      <select id="f-recipe-type" onchange="toggleRecipeType()">
+        <option value="simple">Recette simple</option>
+        <option value="sections">Recette avec sous-sections</option>
+      </select>
+    </div>
+
+    <div id="simple-recipe-fields">
+      <div class="form-field">
+        <label>Ingrédients</label>
+        <div class="ingredient-actions">
+          <button type="button" class="secondary-btn" onclick="addStructuredIngredientToSimple()">+ Ingrédient ajustable</button>
+          <button type="button" class="secondary-btn" onclick="addFreeTextIngredientToSimple()">+ Ingrédient libre</button>
+        </div>
+        <div id="simple-ingredients-list" style="display:flex; flex-direction:column; gap:8px; margin-top:8px;"></div>
+        <small class="small-muted">Ingrédient ajustable = quantité recalculée selon les portions. Ingrédient libre = texte simple.</small>
+      </div>
+
+      <div class="form-field">
+        <label>Étapes (une par ligne)</label>
+        <textarea id="f-steps" rows="6" placeholder="Mélanger...&#10;Cuire...&#10;Servir..."></textarea>
+      </div>
+    </div>
+
+    <div class="form-field" id="sectioned-recipe-fields" style="display:none;">
       <label>Sections de la recette</label>
       <div id="sections-container" style="display:flex; flex-direction:column; gap:1rem;"></div>
       <button type="button" class="add-section-btn" onclick="addSectionForm()">+ Ajouter une sous-section</button>
@@ -1150,11 +1175,24 @@ function renderPage() {
 function openAddForm() {
   document.getElementById('add-overlay').style.display = 'flex';
   resetAddForm();
-  addSectionForm();
 }
 
 function closeAddForm() {
   document.getElementById('add-overlay').style.display = 'none';
+}
+
+function toggleRecipeType() {
+  const type = document.getElementById('f-recipe-type').value;
+  const simpleFields = document.getElementById('simple-recipe-fields');
+  const sectionedFields = document.getElementById('sectioned-recipe-fields');
+
+  if (type === 'simple') {
+    simpleFields.style.display = 'block';
+    sectionedFields.style.display = 'none';
+  } else {
+    simpleFields.style.display = 'none';
+    sectionedFields.style.display = 'block';
+  }
 }
 
 function resetAddForm() {
@@ -1165,12 +1203,17 @@ function resetAddForm() {
   document.getElementById('f-veg').value = 'false';
   document.getElementById('f-note').value = '';
   document.getElementById('f-source').value = '';
+  document.getElementById('f-steps').value = '';
+  document.getElementById('f-recipe-type').value = 'simple';
 
   Array.from(document.getElementById('f-tags').options).forEach(option => {
     option.selected = false;
   });
 
   document.getElementById('sections-container').innerHTML = '';
+  document.getElementById('simple-ingredients-list').innerHTML = '';
+
+  toggleRecipeType();
 }
 
 function addSectionForm() {
@@ -1261,6 +1304,63 @@ function removeIngredientRow(button) {
   if (row) row.remove();
 }
 
+function addStructuredIngredientToSimple() {
+  const list = document.getElementById('simple-ingredients-list');
+  const item = document.createElement('div');
+  item.className = 'ingredient-builder';
+  item.dataset.type = 'structured';
+  item.innerHTML = `
+    <input type="number" step="any" class="ing-qty" placeholder="Qté">
+    <input type="text" class="ing-unit" placeholder="Unité">
+    <input type="text" class="ing-name" placeholder="Nom de l’ingrédient">
+    <button type="button" class="ingredient-remove-btn" onclick="removeIngredientRow(this)">✕</button>
+  `;
+  list.appendChild(item);
+}
+
+function addFreeTextIngredientToSimple() {
+  const list = document.getElementById('simple-ingredients-list');
+  const item = document.createElement('div');
+  item.className = 'ingredient-builder full-text';
+  item.dataset.type = 'text';
+  item.innerHTML = `
+    <input type="text" class="ing-text" placeholder="Ex : 1 filet de jus de citron">
+    <button type="button" class="ingredient-remove-btn" onclick="removeIngredientRow(this)">✕</button>
+  `;
+  list.appendChild(item);
+}
+
+function collectSimpleIngredients() {
+  const rows = document.querySelectorAll('#simple-ingredients-list .ingredient-builder');
+
+  return Array.from(rows).map(row => {
+    const type = row.dataset.type;
+
+    if (type === 'structured') {
+      const quantityValue = row.querySelector('.ing-qty')?.value.trim();
+      const unit = row.querySelector('.ing-unit')?.value.trim() || '';
+      const name = row.querySelector('.ing-name')?.value.trim() || '';
+
+      if (!quantityValue && !unit && !name) return null;
+      if (!name) return null;
+
+      return {
+        quantity: Number(quantityValue || 0),
+        unit,
+        name
+      };
+    }
+
+    if (type === 'text') {
+      const text = row.querySelector('.ing-text')?.value.trim() || '';
+      if (!text) return null;
+      return { text };
+    }
+
+    return null;
+  }).filter(Boolean);
+}
+
 function collectIngredientsFromSection(sectionBlock) {
   const rows = sectionBlock.querySelectorAll('.section-ingredients-list .ingredient-builder');
 
@@ -1314,12 +1414,7 @@ function saveNewRecipe() {
     return;
   }
 
-  const sections = collectSectionsFromForm();
-  if (!sections.length) {
-    alert('Ajoute au moins une sous-section à ta recette.');
-    return;
-  }
-
+  const recipeType = document.getElementById('f-recipe-type').value;
   const servings = Math.max(1, Number(document.getElementById('f-servings').value) || 1);
   const custom = getCustomRecipes();
   const newId = Date.now();
@@ -1334,10 +1429,39 @@ function saveNewRecipe() {
     time: document.getElementById('f-time').value.trim(),
     servings,
     veg: document.getElementById('f-veg').value === 'true',
-    sections,
     note: document.getElementById('f-note').value.trim(),
     source: document.getElementById('f-source').value.trim()
   };
+
+  if (recipeType === 'sections') {
+    const sections = collectSectionsFromForm();
+
+    if (!sections.length) {
+      alert('Ajoute au moins une sous-section à ta recette.');
+      return;
+    }
+
+    recipe.sections = sections;
+  } else {
+    const ingredients = collectSimpleIngredients();
+    const steps = document.getElementById('f-steps').value
+      .split('\n')
+      .map(line => line.trim())
+      .filter(Boolean);
+
+    if (!ingredients.length) {
+      alert('Ajoute au moins un ingrédient.');
+      return;
+    }
+
+    if (!steps.length) {
+      alert('Ajoute au moins une étape.');
+      return;
+    }
+
+    recipe.ingredients = ingredients;
+    recipe.steps = steps;
+  }
 
   custom.unshift(recipe);
   localStorage.setItem(CUSTOM_KEY, JSON.stringify(custom));
