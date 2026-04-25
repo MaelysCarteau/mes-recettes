@@ -488,8 +488,18 @@
       <input type="text" id="f-emoji" placeholder="🍜" maxlength="2">
     </div>
     <div class="form-field">
-      <label>Tags (séparés par des virgules)</label>
-      <input type="text" id="f-tags" placeholder="Plat, Végétarien, Rapide">
+      <label>Tags</label>
+      <select id="f-tags" multiple size="8">
+        <option value="Végétarien">🌱 Végétarien</option>
+        <option value="Plat">🍽 Plat</option>
+        <option value="Salade">🥗 Salade</option>
+        <option value="Soupe">🍵 Soupe</option>
+        <option value="Quiche / Tarte">🥧 Quiche / Tarte</option>
+        <option value="Dessert">🍮 Dessert</option>
+        <option value="Entrée / Apéro">🥚 Entrée / Apéro</option>
+        <option value="Rapide">⚡ Rapide</option>
+      </select>
+      <small style="color: var(--muted);">Ctrl/Cmd + clic pour sélectionner plusieurs tags.</small>
     </div>
     <div class="form-field">
       <label>Temps</label>
@@ -687,13 +697,15 @@ function renderRecipePage(id) {
 // Charge les recettes custom depuis localStorage et les fusionne
 const CUSTOM_KEY = 'mes-recettes-custom';
 
-function loadCustomRecipes() {
-  const stored = localStorage.getItem(CUSTOM_KEY);
-  if (!stored) return;
-  const custom = JSON.parse(stored);
-  // Ajoute au début pour les voir en premier
-  RECIPES.unshift(...custom);
+function getCustomRecipes() {
+  try {
+    return JSON.parse(localStorage.getItem(CUSTOM_KEY)) || [];
+  } catch (e) {
+    console.error('Erreur localStorage :', e);
+    return [];
+  }
 }
+
 
 function openAddForm() {
   document.getElementById('add-overlay').style.display = 'flex';
@@ -718,7 +730,7 @@ function saveNewRecipe() {
     title,
     emoji: document.getElementById('f-emoji').value || '🍽',
     color: colors[Math.floor(Math.random() * colors.length)],
-    tags: document.getElementById('f-tags').value.split(',').map(t => t.trim()).filter(Boolean),
+    tags: Array.from(document.getElementById('f-tags').selectedOptions).map(option => option.value),
     time: document.getElementById('f-time').value.trim(),
     veg: document.getElementById('f-veg').value === 'true',
     ingredients: document.getElementById('f-ingredients').value.split('\n').map(l => l.trim()).filter(Boolean),
@@ -734,8 +746,6 @@ function saveNewRecipe() {
   closeAddForm();
   renderGrid();
 }
-
-loadCustomRecipes();
 
 function renderPage() {
   const params = new URLSearchParams(window.location.search);
@@ -781,14 +791,23 @@ fetch('recettes.json')
     return response.json();
   })
   .then(data => {
-    RECIPES = data;
+    const custom = getCustomRecipes();
+
+    // Recettes ajoutées en premier, puis recettes du fichier JSON
+    RECIPES = [...custom, ...data];
+
     document.getElementById('header-count').textContent = RECIPES.length + ' recettes';
     renderPage();
   })
   .catch(error => {
     console.error('Erreur de chargement des recettes :', error);
+
+    // Même si recettes.json échoue, on affiche les recettes ajoutées localement
+    RECIPES = getCustomRecipes();
+    renderPage();
+
     document.getElementById('results-info').textContent =
-      'Impossible de charger les recettes. Vérifie recettes.json et lance le site avec Live Server.';
+      'Impossible de charger recettes.json. Affichage des recettes locales uniquement.';
   });
 </script>
 </body>
