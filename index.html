@@ -354,7 +354,7 @@
 <body>
 
 <header>
-  <a href="#" class="logo" onclick="return false">
+  <a href="#" class="logo" onclick="goBackToList(); return false;">
     <div class="logo-mark">
       <svg viewBox="0 0 24 24"><path d="M18.06 22.99h1.66c.84 0 1.53-.64 1.63-1.46L23 5.05h-5V1h-1.97v4.05h-4.97l.3 2.34c1.71.47 3.31 1.32 4.27 2.26 1.44 1.42 2.43 2.89 2.43 5.29v8.05zM1 21.99V21h15.03v.99c0 .55-.45 1-1.01 1H2.01c-.56 0-1.01-.45-1.01-1zm15.03-7c0-4.5-7.5-5-7.5-5s-7.5.5-7.5 5h15z"/></svg>
     </div>
@@ -441,9 +441,25 @@ function renderGrid() {
   const q = currentSearch.toLowerCase();
 
   let filtered = RECIPES.filter(r => {
-    // Le filtre vérifie si le tag actif est présent dans le tableau tags[]
-    const matchTag = currentTag === 'Toutes' || r.tags.includes(currentTag);
-    const matchSearch = !q || r.title.toLowerCase().includes(q) || r.ingredients.join(' ').toLowerCase().includes(q);
+    const tags = r.tags || [];
+    const ingredients = r.ingredients || [];
+    const steps = r.steps || [];
+
+    const matchTag =
+      currentTag === 'Toutes' ||
+      tags.includes(currentTag);
+
+    const searchableText = [
+      r.title || '',
+      r.time || '',
+      r.note || '',
+      ...tags,
+      ...ingredients,
+      ...steps
+    ].join(' ').toLowerCase();
+
+    const matchSearch = !q || searchableText.includes(q);
+
     return matchTag && matchSearch;
   });
 
@@ -464,11 +480,11 @@ function renderGrid() {
   grid.innerHTML = filtered.map(r => `
     <div class="card" onclick="openRecipePage(${r.id})">
       <div class="card-thumb ${r.color} ${r.image ? 'has-image' : ''}">
-        ${r.image ? `<img src="${r.image}" alt="${r.title}">` : r.emoji}
+        ${r.image ? `<img src="${r.image}" alt="${r.title}" loading="lazy">` : r.emoji}
       </div>
       <div class="card-body">
         <div class="card-tags">
-          ${r.tags.map(t => `<span class="card-tag">${t}</span>`).join('')}
+          ${(r.tags || []).map(t => `<span class="card-tag">${t}</span>`).join('')}
         </div>
         <div class="card-title">${r.title}</div>
         <div class="card-meta">
@@ -496,7 +512,11 @@ function goBackToList() {
 
 function renderRecipePage(id) {
   const r = RECIPES.find(x => x.id === id);
-  if (!r) return;
+
+  if (!r) {
+    goBackToList();
+    return;
+  }
 
   document.querySelector('.hero').style.display = 'none';
   document.querySelector('.controls').style.display = 'none';
@@ -509,7 +529,7 @@ function renderRecipePage(id) {
 
     <div class="recipe-page-header">
       <div class="recipe-page-tags">
-        ${r.tags.map(t => `<span class="recipe-page-tag">${t}</span>`).join('')}
+        ${(r.tags || []).map(t => `<span class="recipe-page-tag">${t}</span>`).join('')}
       </div>
       <div class="recipe-page-title">${r.title}</div>
       <div class="recipe-page-meta">
@@ -522,7 +542,7 @@ function renderRecipePage(id) {
       ${r.video ? `
         <div class="recipe-page-section">
           <div class="recipe-video-wrap">
-            <video controls class="recipe-video">
+            <video controls preload="metadata" ${r.image ? `poster="${r.image}"` : ''} class="recipe-video">
               <source src="${r.video}" type="video/mp4">
             </video>
           </div>
@@ -532,19 +552,19 @@ function renderRecipePage(id) {
       <div class="recipe-page-section">
         <h3>Ingrédients</h3>
         <ul class="ingredients-list">
-          ${r.ingredients.map(i => `<li>${i}</li>`).join('')}
+          ${(r.ingredients || []).map(i => `<li>${i}</li>`).join('')}
         </ul>
       </div>
 
       <div class="recipe-page-section">
         <h3>Préparation</h3>
         <ol class="steps-list">
-          ${r.steps.map((s, i) => `<li><span class="step-num">${i+1}</span><span>${s}</span></li>`).join('')}
+          ${(r.steps || []).map((s, i) => `<li><span class="step-num">${i+1}</span><span>${s}</span></li>`).join('')}
         </ol>
         ${r.note ? `<div class="modal-note">💡 ${r.note}</div>` : ''}
       </div>
 
-      ${r.source ? `<a href="${r.source}" target="_blank" class="source-link">↗ Voir le post Instagram original</a>` : ''}
+      ${r.source ? `<a href="${r.source}" target="_blank" rel="noopener noreferrer" class="source-link">↗ Voir le post Instagram original</a>` : ''}
     </div>
   `;
 }
@@ -586,10 +606,21 @@ document.getElementById('filters').addEventListener('click', e => {
 });
 
 fetch('recettes.json')
-  .then(r => r.json())
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`Erreur HTTP ${response.status} lors du chargement de recettes.json`);
+    }
+    return response.json();
+  })
   .then(data => {
     RECIPES = data;
+    document.getElementById('header-count').textContent = RECIPES.length + ' recettes';
     renderPage();
+  })
+  .catch(error => {
+    console.error('Erreur de chargement des recettes :', error);
+    document.getElementById('results-info').textContent =
+      'Impossible de charger les recettes. Vérifie recettes.json et lance le site avec Live Server.';
   });
 </script>
 </body>
