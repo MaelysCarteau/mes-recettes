@@ -52,7 +52,7 @@
   .hero h1 em { font-style: italic; color: var(--accent); }
   .hero p { color: var(--muted); font-size: 1rem; font-weight: 300; }
 
-  /* SEARCH & FILTERS */
+  /* SEARCH & SORT & FILTERS */
   .controls {
     max-width: 900px; margin: 0 auto;
     padding: 1.5rem 2rem;
@@ -74,6 +74,34 @@
   }
   #search:focus { border-color: var(--accent); }
   #search::placeholder { color: var(--muted); }
+
+  .sort-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .sort-label {
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+
+  .sort-select {
+    padding: 10px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    background: var(--card);
+    color: var(--text);
+    outline: none;
+    cursor: pointer;
+  }
+
+  .sort-select:focus {
+    border-color: var(--accent);
+  }
 
   .filters { display: flex; gap: 8px; flex-wrap: wrap; }
   .filter-btn {
@@ -254,6 +282,16 @@
   <div class="search-wrap">
     <svg viewBox="0 0 24 24" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
     <input type="text" id="search" placeholder="Rechercher une recette, un ingrédient…">
+  </div>
+  <div class="sort-wrap">
+    <label for="sort" class="sort-label">Trier :</label>
+    <select id="sort" class="sort-select">
+      <option value="default">Ordre par défaut</option>
+      <option value="az">Alphabétique (A → Z)</option>
+      <option value="za">Alphabétique (Z → A)</option>
+      <option value="time-asc">Temps de préparation (court → long)</option>
+      <option value="time-desc">Temps de préparation (long → court)</option>
+    </select>
   </div>
   <div class="filters" id="filters">
     <button class="filter-btn active" data-tag="Toutes">Toutes</button>
@@ -1343,16 +1381,55 @@ const tagEmojis = {
 
 let currentTag = 'Toutes';
 let currentSearch = '';
+let currentSort = 'default';
+
+function getTimeInMinutes(timeStr) {
+  if (!timeStr) return Infinity;
+
+  const str = timeStr.toLowerCase();
+
+  if (str.includes('variable')) return Infinity;
+
+  let total = 0;
+
+  const hourMatch = str.match(/(\d+)\s*h/);
+  const minMatch = str.match(/(\d+)\s*min/);
+
+  if (hourMatch) total += parseInt(hourMatch[1]) * 60;
+  if (minMatch) total += parseInt(minMatch[1]);
+
+  return total || Infinity;
+}
 
 function renderGrid() {
   const grid = document.getElementById('grid');
   const noRes = document.getElementById('no-results');
   const info = document.getElementById('results-info');
   const q = currentSearch.toLowerCase();
-  const filtered = RECIPES.filter(r => {
+  let filtered = RECIPES.filter(r => {
     const matchTag = currentTag === 'Toutes' || r.tag === currentTag || (currentTag === 'Végétarien' && r.veg);
     const matchSearch = !q || r.title.toLowerCase().includes(q) || r.ingredients.join(' ').toLowerCase().includes(q);
     return matchTag && matchSearch;
+  });
+
+  filtered.sort((a, b) => {
+    if (currentSort === 'az') {
+      return a.title.localeCompare(b.title, 'fr', { sensitivity: 'base' });
+    }
+
+    if (currentSort === 'za') {
+      return b.title.localeCompare(a.title, 'fr', { sensitivity: 'base' });
+    }
+
+    if (currentSort === 'time-asc') {
+      return getTimeInMinutes(a.time) - getTimeInMinutes(b.time);
+    }
+
+    if (currentSort === 'time-desc') {
+      return getTimeInMinutes(b.time) - getTimeInMinutes(a.time);
+    }
+
+    return a.id - b.id;
   });
   info.textContent = filtered.length + ' recette' + (filtered.length > 1 ? 's' : '');
   document.getElementById('header-count').textContent = RECIPES.length + ' recettes';
@@ -1417,6 +1494,11 @@ function closeModalDirect() {
 
 document.getElementById('search').addEventListener('input', e => {
   currentSearch = e.target.value;
+  renderGrid();
+});
+
+document.getElementById('sort').addEventListener('change', e => {
+  currentSort = e.target.value;
   renderGrid();
 });
 
