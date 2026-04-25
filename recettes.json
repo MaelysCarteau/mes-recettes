@@ -835,5 +835,61 @@
     "note": "Servir avec quelques pickles d’oignon rouge.",
     "source": "https://www.instagram.com/reel/DT-52gsjWbL/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==",
     "video": "videos/recette-38.mp4"
-    }
+    },
+    {
+    "id": 39,
+    "title": "Quiche épinards chèvre",
+    "emoji": "🥧",
+    "color": "color-2",
+    "tags": [
+      "Végétarien",
+      "Plat",
+      "Quiche / Tarte"
+    ],
+    "time": "40 min",
+    "servings": 4,
+    "veg": true,
+    "ingredients": [
+        {
+        "quantity": 400,
+        "unit": "g",
+        "name": "épinards"
+        },
+        {
+        "quantity": 3,
+        "unit": "",
+        "name": "œufs"
+        },
+        {
+        "quantity": 10,
+        "unit": "cL",
+        "name": "lait demi écrémé"
+        },
+        {
+        "quantity": 30,
+        "unit": "cL",
+        "name": "crème liquide"
+        },
+        {
+        "text": "Chèvre"
+        },
+        {
+        "text": "Sel, poivre, muscade"
+        },
+        {
+        "text": "Une pâte au choix (brisée, à la patate douce...)"
+        }
+    ],
+    "steps": [
+        "Préchauffer le four à 180°C",
+        "Rincer les épinards à l'eau froide et les égoutter un peu",
+        "Les cuire dans une casserole avec un couvercle entre 5 et 10 min",
+        "Pendant ce temps, mélanger les œufs, la crème, le lait, le sel, le poivre, la muscade dans un saladier",
+        "Disposer des tranches de chèvre sur la pâte",
+        "Hacher les épinards et les mélanger dans le saladier",
+        "Verser la préparation dans le plat à quiche et cuire 30 à 40min au four"
+    ],
+    "note": "On ne sent pas beaucoup le chèvre, ne pas hésiter à en mettre beaucoup",
+    "source": ""
+  }
 ]
