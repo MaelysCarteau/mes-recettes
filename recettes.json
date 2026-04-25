@@ -524,5 +524,66 @@
     "ingredients": ["2 courgettes épaisses","4 œufs","1/2 feta","Persil","Mozzarella râpée"],
     "steps": ["Préchauffer le four. Couper les courgettes en deux dans la longueur et évider légèrement.","Bien égoutter les courgettes dans un torchon pour enlever l'excès d'eau.","Garnir les courgettes avec la feta émiettée et le persil.","Casser un œuf dans chaque demie-courgette.","Parsemer de mozzarella râpée et enfourner jusqu'à ce que l'œuf soit cuit et le fromage doré."],
     "note": "Bien égoutter les courgettes dans un torchon avant cuisson — étape clé !"
-  }
+  },
+  {
+    "id": 38,
+    "title": "Naan express, tofu tandoori & sauce verte",
+    "emoji": "🫓",
+    "color": "color-3",
+    "tags": ["Plat", "Végétarien"],
+    "time": "30 min",
+    "veg": true,
+    "sections": [
+        {
+        "title": "Les naans au fromage",
+        "ingredients": [
+            "200 g de farine",
+            "190 g de yaourt grec",
+            "1 càc de sel",
+            "4 portions de vache qui rit"
+        ],
+        "steps": [
+            "Dans un saladier, mélanger la farine avec le yaourt grec et le sel.",
+            "Former une boule puis diviser la pâte en 4 petites boules.",
+            "Fariner le plan de travail, étaler la pâte et ajouter une portion de vache qui rit.",
+            "Replier la pâte puis l’étaler finement.",
+            "Dans une poêle, faire fondre du beurre et cuire le naan quelques minutes de chaque côté."
+        ]
+        },
+        {
+        "title": "La sauce verte",
+        "ingredients": [
+            "3 càs de yaourt grec",
+            "1 poignée de menthe et de coriandre",
+            "1 filet de jus de citron",
+            "1 filet d’huile d’olive"
+        ],
+        "steps": [
+            "Dans un mixeur, ajouter tous les ingrédients.",
+            "Saler, poivrer puis mixer."
+        ]
+        },
+        {
+        "title": "Les brochettes",
+        "ingredients": [
+            "400 g de tofu (rayon frais)",
+            "4 càs de yaourt grec",
+            "2 càs d’épices tandoori",
+            "1 filet de jus de citron",
+            "1 filet d’huile d’olive"
+        ],
+        "steps": [
+            "Dans un bol, mélanger le yaourt grec avec les épices tandoori, le citron et l’huile d’olive. Saler et poivrer.",
+            "Découper le tofu en morceaux puis le mélanger avec la sauce.",
+            "Laisser reposer pendant 10 minutes.",
+            "Préchauffer le four à 200 degrés.",
+            "Disposer les morceaux de tofu mariné sur des pics à brochette.",
+            "Les déposer sur une plaque de cuisson puis enfourner pendant 20 min.",
+            "Tourner à mi-cuisson."
+        ]
+        }
+    ],
+    "note": "Servir avec quelques pickles d’oignon rouge.",
+    "source": "https://www.instagram.com/reel/DT-52gsjWbL/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="
+    }
 ]
