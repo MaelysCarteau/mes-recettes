@@ -529,6 +529,7 @@
     "id": 38,
     "title": "Naan express, tofu tandoori & sauce verte",
     "emoji": "🫓",
+    "image": "images/recette-38.png",
     "color": "color-3",
     "tags": ["Plat", "Végétarien"],
     "time": "30 min",
@@ -584,6 +585,7 @@
         }
     ],
     "note": "Servir avec quelques pickles d’oignon rouge.",
-    "source": "https://www.instagram.com/reel/DT-52gsjWbL/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="
+    "source": "https://www.instagram.com/reel/DT-52gsjWbL/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==",
+    "video": "videos/recette-38.mp4"
     }
 ]
