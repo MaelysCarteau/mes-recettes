@@ -8,12 +8,34 @@
     "tags": ["Salade", "Rapide"],
     "veg": false,
     "time": "20 min",
+    "servings": 2,
     "source": "https://www.instagram.com/reel/DXHsbSMiAlq/",
     "video": "videos/recette-1.mp4",
-    "ingredients": ["12 gyozas (légumes ou poulet)","2 carottes","1/2 concombre","1/4 de chou rouge","100 g d'edamames cuits","2 cébettes","1 gousse d'ail","1 càs de miso blanc","2 càs d'huile d'olive","1 càs de miel","Jus d'1/2 citron vert","Graines de sésame","Huile pimentée"],
-    "steps": ["Couper les carottes en julienne, le concombre en fines lamelles et émincer le chou rouge.","Cuire les edamames. Émincer les cébettes et râper l'ail.","Préparer la vinaigrette : mélanger le miso, l'huile d'olive, le miel et le jus de citron vert.","Faire griller les gyozas à la poêle ou à l'airfryer à 180°C pendant 8–10 min.","Ajouter les gyozas à la salade, verser la sauce et bien mélanger.","Terminer avec les graines de sésame et un filet d'huile pimentée."],
+    "ingredients": [
+        { "quantity": 12, "unit": "", "name": "gyozas (légumes ou poulet)" },
+        { "quantity": 2, "unit": "", "name": "carottes" },
+        { "quantity": 0.5, "unit": "", "name": "concombre" },
+        { "quantity": 0.25, "unit": "", "name": "chou rouge" },
+        { "quantity": 100, "unit": "g", "name": "edamames cuits" },
+        { "quantity": 2, "unit": "", "name": "cébettes" },
+        { "quantity": 1, "unit": "gousse", "name": "ail" },
+        { "quantity": 1, "unit": "càs", "name": "miso blanc" },
+        { "quantity": 2, "unit": "càs", "name": "huile d'olive" },
+        { "quantity": 1, "unit": "càs", "name": "miel" },
+        { "quantity": 0.5, "unit": "", "name": "jus de citron vert"},
+        { "text": "graines de sésame" },
+        { "text": "huile pimentée" }
+    ],
+    "steps": [
+        "Couper les carottes en julienne, le concombre en fines lamelles et émincer le chou rouge.",
+        "Cuire les edamames. Émincer les cébettes et râper l'ail.",
+        "Préparer la vinaigrette : mélanger le miso, l'huile d'olive, le miel et le jus de citron vert.",
+        "Faire griller les gyozas à la poêle ou à l'airfryer à 180°C pendant 8–10 min.",
+        "Ajouter les gyozas à la salade, verser la sauce et bien mélanger.",
+        "Terminer avec les graines de sésame et un filet d'huile pimentée."
+    ],
     "note": "Prête en moins de 20 minutes, fraîche, croquante et avec une sauce au miso addictive."
-  },
+    },
   {
     "id": 2,
     "title": "Salade pomme de terre & tzatziki",
@@ -23,11 +45,26 @@
     "tags": ["Salade", "Végétarien"],
     "veg": true,
     "time": "35 min",
+    "servings": 2,
     "source": "https://www.instagram.com/reel/DXPXDxBiDMS/",
     "video": "videos/recette-2.mp4",
-    "ingredients": ["200 g de pommes de terre","1 càs d'herbes de Provence","1 concombre","2 càs de yaourt grec","1/2 jus de citron","1 càs d'huile d'olive","1 oignon","Tomates"],
-    "steps": ["Éplucher et couper les pommes de terre. Les assaisonner avec de l'huile d'olive et des herbes de Provence, puis cuire à 200°C pendant 25 min.","Râper le concombre dans un bol, ajouter le yaourt grec, de l'aneth, le jus de citron et l'huile d'olive.","Assembler : pommes de terre, l'autre demi concombre, les tomates et la sauce.","Déguster !"]
-  },
+    "ingredients": [
+        { "quantity": 200, "unit": "g", "name": "pommes de terre" },
+        { "quantity": 1, "unit": "càs", "name": "herbes de Provence" },
+        { "quantity": 1, "unit": "", "name": "concombre" },
+        { "quantity": 2, "unit": "càs", "name": "yaourt grec" },
+        { "quantity": 0.5, "unit": "", "name": "jus de citron vert"},
+        { "quantity": 1, "unit": "càs", "name": "huile d'olive" },
+        { "quantity": 1, "unit": "", "name": "oignon" },
+        { "text": "tomates" }
+    ],
+    "steps": [
+        "Éplucher et couper les pommes de terre. Les assaisonner avec de l'huile d'olive et des herbes de Provence, puis cuire à 200°C pendant 25 min.",
+        "Râper le concombre dans un bol, ajouter le yaourt grec, de l'aneth, le jus de citron et l'huile d'olive.",
+        "Assembler : pommes de terre, l'autre demi concombre, les tomates et la sauce.",
+        "Déguster !"
+    ]
+},
   {
     "id": 3,
     "title": "Carbo veggie aux courgettes",
@@ -37,10 +74,25 @@
     "tags": ["Plat", "Végétarien"],
     "veg": true,
     "time": "25 min",
+    "servings": 2,
     "source": "https://www.instagram.com/reel/DXR_8SZCA-2/",
     "video": "videos/recette-3.mp4",
-    "ingredients": ["2 courgettes","200 g de pâtes","50 g de pecorino râpé","1 œuf entier + 2 jaunes","Huile d'olive","Poivre"],
-    "steps": ["Faire revenir les courgettes coupées en demi-rondelles dans de l'huile d'olive.","Cuire les pâtes al dente et réserver de l'eau de cuisson.","Dans un bol, mélanger les œufs, le pecorino râpé, beaucoup de poivre et un peu d'eau de cuisson.","Dans la poêle des courgettes, ajouter les pâtes égouttées, les courgettes et incorporer la mixture petit à petit en remuant jusqu'à obtenir une texture crémeuse.","Déguster immédiatement."]
+    "ingredients": [
+        { "quantity": 2, "unit": "", "name": "courgettes" },
+        { "quantity": 200, "unit": "g", "name": "pâtes" },
+        { "quantity": 50, "unit": "g", "name": "pecorino râpé" },
+        { "quantity": 1, "unit": "", "name": "oeuf entier" },
+        { "quantity": 2, "unit": "", "name": "jaunes d'oeuf" },
+        { "text": "huile d'olive" },
+        { "text": "poivre" }
+    ],
+    "steps": [
+        "Faire revenir les courgettes coupées en demi-rondelles dans de l'huile d'olive.",
+        "Cuire les pâtes al dente et réserver de l'eau de cuisson.",
+        "Dans un bol, mélanger les œufs, le pecorino râpé, beaucoup de poivre et un peu d'eau de cuisson.",
+        "Dans la poêle des courgettes, ajouter les pâtes égouttées, les courgettes et incorporer la mixture petit à petit en remuant jusqu'à obtenir une texture crémeuse.",
+        "Déguster immédiatement."
+    ]
   },
   {
     "id": 4,
@@ -51,12 +103,33 @@
     "tags": ["Plat", "Végétarien", "Rapide"],
     "veg": true,
     "time": "20 min",
+    "servings": 2,
     "source": "https://www.instagram.com/reel/DWPHnmtiFBb/",
     "video": "videos/recette-4.mp4",
-    "ingredients": ["120 g de fregola ou orzo","1/2 oignon","1 gousse d'ail","1 sucrine","80 g de petits pois frais ou surgelés","500 ml de bouillon de légumes","80 g de Boursin (fromage aillé)","Zestes d'1/2 citron","1 càs d'huile d'olive","Sel, poivre","2 jaunes d'œufs (pour servir)","Parmesan râpé"],
-    "steps": ["Émincer l'oignon et l'ail. Faire revenir dans l'huile d'olive 2-3 min.","Ajouter la fregola, mélanger puis verser le bouillon. Cuire à feu moyen 10 min en remuant régulièrement.","Ajouter la sucrine coupée et les petits pois.","Incorporer le Boursin et mélanger jusqu'à obtenir une texture bien crémeuse.","Ajouter les zestes de citron, saler, poivrer.","Servir chaud avec un jaune d'œuf et du parmesan."],
+    "ingredients": [
+        { "quantity": 120, "unit": "g", "name": "fregola ou orzo" },
+        { "quantity": 0.5, "unit": "", "name": "oignon" },
+        { "quantity": 1, "unit": "gousse", "name": "ail" },
+        { "quantity": 1, "unit": "", "name": "sucrine" },
+        { "quantity": 80, "unit": "g", "name": "petits pois frais ou surgelés" },
+        { "quantity": 500, "unit": "ml", "name": "bouillon de légumes" },
+        { "quantity": 80, "unit": "g", "name": "Boursin (fromage aillé)" },
+        { "quantity": 0.5, "unit": "", "name": "zeste de citron" },
+        { "quantity": 1, "unit": "càs", "name": "huile d'olive" },
+        { "text": "sel, poivre" },
+        { "quantity": 2, "unit": "", "name": "jaunes d'œufs (pour servir)" },
+        { "text": "parmesan râpé" }
+    ],
+    "steps": [
+        "Émincer l'oignon et l'ail. Faire revenir dans l'huile d'olive 2-3 min.",
+        "Ajouter la fregola, mélanger puis verser le bouillon. Cuire à feu moyen 10 min en remuant régulièrement.",
+        "Ajouter la sucrine coupée et les petits pois.",
+        "Incorporer le Boursin et mélanger jusqu'à obtenir une texture bien crémeuse.",
+        "Ajouter les zestes de citron, saler, poivrer.",
+        "Servir chaud avec un jaune d'œuf et du parmesan."
+    ],
     "note": "Ajuster la texture avec un peu d'eau ou de bouillon si besoin — ça doit être crémeux mais pas sec."
-  },
+ },
   {
     "id": 5,
     "title": "Dahl de lentilles corail",
@@ -66,11 +139,31 @@
     "tags": ["Plat", "Végétarien"],
     "veg": true,
     "time": "40 min",
+    "servings": 4,
     "source": "https://www.instagram.com/reel/DW6rcaRITFR/",
     "video": "videos/recette-5.mp4",
-    "ingredients": ["200 g de lentilles corail","1 gros oignon","Carottes","Sauce tomate","Lait de coco","Eau","Ail","Paprika fumé","Curry madras","Curry jaune","Sel","Riz basmati, noix de cajou, coriandre, sriracha pour servir"],
-    "steps": ["Faire revenir l'oignon émincé avec l'ail dans une casserole.","Ajouter les carottes coupées en rondelles et les épices (paprika, curry madras, curry jaune). Bien mélanger.","Ajouter les lentilles rincées, la sauce tomate, le lait de coco et l'eau. Saler.","Laisser mijoter à feu doux environ 20-25 min jusqu'à ce que les lentilles soient fondantes.","Servir sur du riz basmati avec des noix de cajou, de la coriandre fraîche et de la sriracha."]
-  },
+    "ingredients": [
+        { "quantity": 200, "unit": "g", "name": "lentilles corail" },
+        { "quantity": 1, "unit": "", "name": "gros oignon" },
+        { "text": "carottes" },
+        { "text": "sauce tomate" },
+        { "text": "lait de coco" },
+        { "text": "eau" },
+        { "text": "ail" },
+        { "text": "paprika fumé" },
+        { "text": "curry madras" },
+        { "text": "curry jaune" },
+        { "text": "sel" },
+        { "text": "riz basmati, noix de cajou, coriandre, sriracha pour servir" }
+    ],
+    "steps": [
+        "Faire revenir l'oignon émincé avec l'ail dans une casserole.",
+        "Ajouter les carottes coupées en rondelles et les épices (paprika, curry madras, curry jaune). Bien mélanger.",
+        "Ajouter les lentilles rincées, la sauce tomate, le lait de coco et l'eau. Saler.",
+        "Laisser mijoter à feu doux environ 20-25 min jusqu'à ce que les lentilles soient fondantes.",
+        "Servir sur du riz basmati avec des noix de cajou, de la coriandre fraîche et de la sriracha."
+    ]
+ },
   {
     "id": 6,
     "title": "5 repas anti-inflammatoires",
@@ -81,8 +174,84 @@
     "veg": true,
     "time": "Variable",
     "source": "https://www.instagram.com/reel/DW02IlSDDS8/",
-    "ingredients": ["— Smoothie : épinards, banane, kiwi, ananas, protéines vanille, lait d'avoine, gingembre, curcuma","— Salade quinoa : quinoa, carottes & patate douce rôties, oignon rouge, haricots blancs, chou rouge, feta, grenade, menthe","— Salade carottes : carottes, feta, grenade, persil + vinaigrette miel-curcuma","— Curry de pois chiches : pois chiches, sauce tomate, lait de coco, curry, curcuma, cumin, coriandre","— Tacos bowl : riz complet, haché végétal, patate douce rôtie, avocat, mâche, pain pita, labné"],
-    "steps": ["Smoothie : mixer tous les ingrédients ensemble.","Salade quinoa : rôtir les légumes au four, cuire le quinoa, assembler avec la vinaigrette (vinaigre de cidre, citron, miel, huile d'olive, gingembre, curcuma, sésame).","Salade carottes : préparer les carottes en lamelles et mélanger avec la feta, la grenade et la vinaigrette.","Curry pois chiches : faire revenir les pois chiches avec les épices, la sauce tomate et le lait de coco. Servir avec du riz complet.","Tacos bowl : rôtir la patate douce, assembler tous les éléments dans un bol."]
+    "sections": [
+        {
+        "title": "Smoothie",
+        "ingredients": [
+            { "text": "épinards" },
+            { "text": "banane" },
+            { "text": "kiwi" },
+            { "text": "ananas" },
+            { "text": "protéines vanille" },
+            { "text": "lait d'avoine" },
+            { "text": "gingembre" },
+            { "text": "curcuma" }
+        ],
+        "steps": [
+            "Mixer tous les ingrédients ensemble."
+        ]
+        },
+        {
+        "title": "Salade quinoa",
+        "ingredients": [
+            { "text": "quinoa" },
+            { "text": "carottes rôties" },
+            { "text": "patate douce rôtie" },
+            { "text": "oignon rouge" },
+            { "text": "haricots blancs" },
+            { "text": "chou rouge" },
+            { "text": "feta" },
+            { "text": "grenade" },
+            { "text": "menthe" }
+        ],
+        "steps": [
+            "Rôtir les légumes au four, cuire le quinoa, assembler avec la vinaigrette (vinaigre de cidre, citron, miel, huile d'olive, gingembre, curcuma, sésame)."
+        ]
+        },
+        {
+        "title": "Salade carottes",
+        "ingredients": [
+            { "text": "carottes" },
+            { "text": "feta" },
+            { "text": "grenade" },
+            { "text": "persil" },
+            { "text": "vinaigrette miel-curcuma" }
+        ],
+        "steps": [
+            "Préparer les carottes en lamelles et mélanger avec la feta, la grenade et la vinaigrette."
+        ]
+        },
+        {
+        "title": "Curry de pois chiches",
+        "ingredients": [
+            { "text": "pois chiches" },
+            { "text": "sauce tomate" },
+            { "text": "lait de coco" },
+            { "text": "curry" },
+            { "text": "curcuma" },
+            { "text": "cumin" },
+            { "text": "coriandre" }
+        ],
+        "steps": [
+            "Faire revenir les pois chiches avec les épices, la sauce tomate et le lait de coco. Servir avec du riz complet."
+        ]
+        },
+        {
+        "title": "Tacos bowl",
+        "ingredients": [
+            { "text": "riz complet" },
+            { "text": "haché végétal" },
+            { "text": "patate douce rôtie" },
+            { "text": "avocat" },
+            { "text": "mâche" },
+            { "text": "pain pita" },
+            { "text": "labné" }
+        ],
+        "steps": [
+            "Rôtir la patate douce, assembler tous les éléments dans un bol."
+        ]
+        }
+    ]
   },
   {
     "id": 7,
@@ -534,14 +703,15 @@
     "tags": ["Plat", "Végétarien"],
     "time": "30 min",
     "veg": true,
+    "servings": 2,
     "sections": [
         {
         "title": "Les naans au fromage",
         "ingredients": [
-            "200 g de farine",
-            "190 g de yaourt grec",
-            "1 càc de sel",
-            "4 portions de vache qui rit"
+            { "quantity": 200, "unit": "g", "name": "farine" },
+            { "quantity": 190, "unit": "g", "name": "yaourt grec" },
+            { "quantity": 1, "unit": "càc", "name": "sel" },
+            { "quantity": 4, "unit": "portion(s)", "name": "vache qui rit" }
         ],
         "steps": [
             "Dans un saladier, mélanger la farine avec le yaourt grec et le sel.",
@@ -554,10 +724,10 @@
         {
         "title": "La sauce verte",
         "ingredients": [
-            "3 càs de yaourt grec",
-            "1 poignée de menthe et de coriandre",
-            "1 filet de jus de citron",
-            "1 filet d’huile d’olive"
+            { "quantity": 3, "unit": "càs", "name": "yaourt grec" },
+            { "text": "1 poignée de menthe et de coriandre" },
+            { "text": "1 filet de jus de citron" },
+            { "text": "1 filet d’huile d’olive" }
         ],
         "steps": [
             "Dans un mixeur, ajouter tous les ingrédients.",
@@ -567,11 +737,11 @@
         {
         "title": "Les brochettes",
         "ingredients": [
-            "400 g de tofu (rayon frais)",
-            "4 càs de yaourt grec",
-            "2 càs d’épices tandoori",
-            "1 filet de jus de citron",
-            "1 filet d’huile d’olive"
+            { "quantity": 400, "unit": "g", "name": "tofu (rayon frais)" },
+            { "quantity": 4, "unit": "càs", "name": "yaourt grec" },
+            { "quantity": 2, "unit": "càs", "name": "épices tandoori" },
+            { "text": "1 filet de jus de citron" },
+            { "text": "1 filet d’huile d’olive" }
         ],
         "steps": [
             "Dans un bol, mélanger le yaourt grec avec les épices tandoori, le citron et l’huile d’olive. Saler et poivrer.",

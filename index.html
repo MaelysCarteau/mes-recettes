@@ -198,12 +198,6 @@
     color: var(--accent);
   }
 
-  .hero p {
-    color: var(--muted);
-    font-size: 1rem;
-    font-weight: 300;
-  }
-
   .controls {
     max-width: 900px;
     margin: 0 auto;
@@ -213,9 +207,7 @@
     gap: 1rem;
   }
 
-  .search-wrap {
-    position: relative;
-  }
+  .search-wrap { position: relative; }
 
   .search-wrap svg {
     position: absolute;
@@ -238,16 +230,9 @@
     background: var(--card);
     color: var(--text);
     outline: none;
-    transition: border-color 0.2s;
   }
 
-  #search:focus {
-    border-color: var(--accent);
-  }
-
-  #search::placeholder {
-    color: var(--muted);
-  }
+  #search:focus { border-color: var(--accent); }
 
   .sort-wrap {
     display: flex;
@@ -256,10 +241,7 @@
     flex-wrap: wrap;
   }
 
-  .sort-label {
-    font-size: 0.9rem;
-    color: var(--muted);
-  }
+  .sort-label { font-size: 0.9rem; color: var(--muted); }
 
   .sort-select {
     padding: 10px 14px;
@@ -271,10 +253,6 @@
     color: var(--text);
     outline: none;
     cursor: pointer;
-  }
-
-  .sort-select:focus {
-    border-color: var(--accent);
   }
 
   .filters {
@@ -363,13 +341,10 @@
 
   .card-thumb.has-image img {
     width: 100%;
-    height: auto;
     display: block;
   }
 
-  .card-body {
-    padding: 14px 16px;
-  }
+  .card-body { padding: 14px 16px; }
 
   .card-tags {
     display: flex;
@@ -446,10 +421,6 @@
     font-size: 0.9rem;
   }
 
-  .back-btn:hover {
-    border-color: var(--accent);
-  }
-
   .recipe-hero-image {
     width: 100%;
     max-height: 380px;
@@ -492,15 +463,34 @@
     display: flex;
     gap: 8px;
     flex-wrap: wrap;
+    align-items: center;
   }
 
-  .recipe-page-body {
-    padding: 1.5rem;
+  .servings-control {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    background: var(--tag-bg);
+    border-radius: 10px;
   }
 
-  .recipe-page-section {
-    margin-bottom: 2rem;
+  .servings-control label {
+    font-size: 0.78rem;
+    color: var(--muted);
   }
+
+  .servings-control select {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 4px 8px;
+    background: white;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .recipe-page-body { padding: 1.5rem; }
+
+  .recipe-page-section { margin-bottom: 2rem; }
 
   .recipe-page-section h3 {
     font-size: 0.8rem;
@@ -519,10 +509,6 @@
     border: 1px solid var(--border);
     border-radius: 14px;
     background: #fffdf9;
-  }
-
-  .recipe-subsection:last-child {
-    margin-bottom: 0;
   }
 
   .recipe-subsection-title {
@@ -624,23 +610,12 @@
     border: 1px solid var(--accent-light);
     border-radius: 8px;
     margin-top: 0.5rem;
-    transition: background 0.15s;
-  }
-
-  .source-link:hover {
-    background: var(--accent-light);
   }
 
   .no-results {
     text-align: center;
     padding: 4rem 2rem;
     color: var(--muted);
-  }
-
-  .no-results span {
-    font-size: 2.5rem;
-    display: block;
-    margin-bottom: 1rem;
   }
 
   .section-builder {
@@ -651,11 +626,6 @@
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
-  }
-
-  .section-builder h3 {
-    font-size: 1rem;
-    font-family: 'Playfair Display', serif;
   }
 
   .small-muted {
@@ -682,6 +652,55 @@
     background: transparent;
     cursor: pointer;
     font-family: 'DM Sans', sans-serif;
+  }
+
+  .ingredient-builder {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.8rem;
+    background: white;
+    display: grid;
+    grid-template-columns: 110px 100px 1fr auto;
+    gap: 8px;
+    align-items: start;
+  }
+
+  .ingredient-builder.full-text {
+    grid-template-columns: 1fr auto;
+  }
+
+  .ingredient-remove-btn {
+    border: 1px solid #e8caca;
+    background: #fff5f5;
+    color: #9a4b4b;
+    border-radius: 8px;
+    padding: 8px 10px;
+    cursor: pointer;
+  }
+
+  .ingredient-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .secondary-btn {
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: white;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  @media (max-width: 700px) {
+    .ingredient-builder {
+      grid-template-columns: 1fr;
+    }
+
+    .ingredient-builder.full-text {
+      grid-template-columns: 1fr;
+    }
   }
 </style>
 </head>
@@ -782,6 +801,11 @@
     </div>
 
     <div class="form-field">
+      <label>Portions de base</label>
+      <input type="number" id="f-servings" min="1" value="2" placeholder="2">
+    </div>
+
+    <div class="form-field">
       <label>Végétarien ?</label>
       <select id="f-veg">
         <option value="false">Non</option>
@@ -818,6 +842,7 @@ let RECIPES = [];
 let currentTag = 'Toutes';
 let currentSearch = '';
 let currentSort = 'default';
+let currentServings = {};
 
 const CUSTOM_KEY = 'mes-recettes-custom';
 
@@ -825,14 +850,11 @@ function getTimeInMinutes(timeStr) {
   if (!timeStr) return Infinity;
   const str = timeStr.toLowerCase();
   if (str.includes('variable')) return Infinity;
-
   let total = 0;
   const hourMatch = str.match(/(\d+)\s*h/);
   const minMatch = str.match(/(\d+)\s*min/);
-
   if (hourMatch) total += parseInt(hourMatch[1]) * 60;
   if (minMatch) total += parseInt(minMatch[1]);
-
   return total || Infinity;
 }
 
@@ -845,15 +867,22 @@ function getCustomRecipes() {
   }
 }
 
+function normalizeIngredientToSearchText(ingredient) {
+  if (!ingredient) return '';
+  if (typeof ingredient === 'string') return ingredient;
+  if (ingredient.text) return ingredient.text;
+  return [ingredient.quantity, ingredient.unit, ingredient.name].filter(Boolean).join(' ');
+}
+
 function getRecipeSearchText(r) {
   const tags = r.tags || [];
-  const legacyIngredients = r.ingredients || [];
+  const legacyIngredients = (r.ingredients || []).map(normalizeIngredientToSearchText);
   const legacySteps = r.steps || [];
   const sections = r.sections || [];
 
   const sectionText = sections.flatMap(section => [
     section.title || '',
-    ...(section.ingredients || []),
+    ...((section.ingredients || []).map(normalizeIngredientToSearchText)),
     ...(section.steps || [])
   ]);
 
@@ -876,14 +905,9 @@ function renderGrid() {
 
   let filtered = RECIPES.filter(r => {
     const tags = r.tags || [];
-
-    const matchTag =
-      currentTag === 'Toutes' ||
-      tags.includes(currentTag);
-
+    const matchTag = currentTag === 'Toutes' || tags.includes(currentTag);
     const searchableText = getRecipeSearchText(r);
     const matchSearch = !q || searchableText.includes(q);
-
     return matchTag && matchSearch;
   });
 
@@ -919,6 +943,7 @@ function renderGrid() {
         <div class="card-meta">
           ${r.time ? `<span class="meta-pill">⏱ ${r.time}</span>` : ''}
           ${r.veg ? `<span class="meta-pill veg">🌱 Végé</span>` : ''}
+          ${r.servings ? `<span class="meta-pill">👥 ${r.servings}</span>` : ''}
         </div>
       </div>
     </div>
@@ -939,13 +964,47 @@ function goBackToList() {
   renderPage();
 }
 
-function renderLegacyRecipeContent(r) {
+function formatNumber(value) {
+  if (!Number.isFinite(value)) return '';
+  const rounded = Math.round(value * 100) / 100;
+  return Number.isInteger(rounded)
+    ? String(rounded)
+    : String(rounded).replace('.', ',');
+}
+
+function renderIngredient(ingredient, baseServings = 1, targetServings = 1) {
+  if (!ingredient) return '';
+
+  if (typeof ingredient === 'string') {
+    return ingredient;
+  }
+
+  if (ingredient.text) {
+    return ingredient.text;
+  }
+
+  if (typeof ingredient.quantity === 'number') {
+    const scaledQuantity = ingredient.quantity * (targetServings / baseServings);
+    const q = formatNumber(scaledQuantity);
+    return [q, ingredient.unit || '', ingredient.name || ''].filter(Boolean).join(' ');
+  }
+
+  return ingredient.name || '';
+}
+
+function renderIngredientsList(ingredients, baseServings, targetServings) {
+  return `
+    <ul class="ingredients-list">
+      ${(ingredients || []).map(i => `<li>${renderIngredient(i, baseServings, targetServings)}</li>`).join('')}
+    </ul>
+  `;
+}
+
+function renderLegacyRecipeContent(r, servingsToUse) {
   return `
     <div class="recipe-page-section">
       <h3>Ingrédients</h3>
-      <ul class="ingredients-list">
-        ${(r.ingredients || []).map(i => `<li>${i}</li>`).join('')}
-      </ul>
+      ${renderIngredientsList(r.ingredients || [], r.servings || 1, servingsToUse)}
     </div>
 
     <div class="recipe-page-section">
@@ -963,7 +1022,7 @@ function renderLegacyRecipeContent(r) {
   `;
 }
 
-function renderSectionedRecipeContent(r) {
+function renderSectionedRecipeContent(r, servingsToUse) {
   return `
     <div class="recipe-page-section">
       <h3>Recette</h3>
@@ -974,9 +1033,7 @@ function renderSectionedRecipeContent(r) {
           ${(section.ingredients && section.ingredients.length) ? `
             <div class="recipe-page-section">
               <h3>Ingrédients</h3>
-              <ul class="ingredients-list">
-                ${section.ingredients.map(i => `<li>${i}</li>`).join('')}
-              </ul>
+              ${renderIngredientsList(section.ingredients, r.servings || 1, servingsToUse)}
             </div>
           ` : ''}
 
@@ -1001,6 +1058,11 @@ function renderSectionedRecipeContent(r) {
   `;
 }
 
+function updateServings(id, value) {
+  currentServings[id] = Number(value);
+  renderRecipePage(id);
+}
+
 function renderRecipePage(id) {
   const r = RECIPES.find(x => x.id === id);
 
@@ -1009,12 +1071,21 @@ function renderRecipePage(id) {
     return;
   }
 
+  if (!currentServings[id]) {
+    currentServings[id] = r.servings || 1;
+  }
+
+  const servingsToUse = currentServings[id];
+  const hasSections = Array.isArray(r.sections) && r.sections.length > 0;
+
   document.querySelector('.hero').style.display = 'none';
   document.querySelector('.controls').style.display = 'none';
   document.querySelector('.grid-section').style.display = 'none';
   document.getElementById('recipe-page').style.display = 'block';
 
-  const hasSections = Array.isArray(r.sections) && r.sections.length > 0;
+  const options = Array.from({ length: 12 }, (_, i) => i + 1)
+    .map(n => `<option value="${n}" ${n === servingsToUse ? 'selected' : ''}>${n}</option>`)
+    .join('');
 
   const recipeContent = document.getElementById('recipe-content');
   recipeContent.innerHTML = `
@@ -1024,10 +1095,19 @@ function renderRecipePage(id) {
       <div class="recipe-page-tags">
         ${(r.tags || []).map(t => `<span class="recipe-page-tag">${t}</span>`).join('')}
       </div>
+
       <div class="recipe-page-title">${r.title}</div>
+
       <div class="recipe-page-meta">
         ${r.time ? `<span class="meta-pill">⏱ ${r.time}</span>` : ''}
         ${r.veg ? `<span class="meta-pill veg">🌱 Végé</span>` : ''}
+
+        <div class="servings-control">
+          <label for="servings-select">Portions</label>
+          <select id="servings-select" onchange="updateServings(${r.id}, this.value)">
+            ${options}
+          </select>
+        </div>
       </div>
     </div>
 
@@ -1042,7 +1122,10 @@ function renderRecipePage(id) {
         </div>
       ` : ''}
 
-      ${hasSections ? renderSectionedRecipeContent(r) : renderLegacyRecipeContent(r)}
+      ${hasSections
+        ? renderSectionedRecipeContent(r, servingsToUse)
+        : renderLegacyRecipeContent(r, servingsToUse)
+      }
 
       ${r.source ? `<a href="${r.source}" target="_blank" rel="noopener noreferrer" class="source-link">↗ Voir le post Instagram original</a>` : ''}
     </div>
@@ -1078,6 +1161,7 @@ function resetAddForm() {
   document.getElementById('f-title').value = '';
   document.getElementById('f-emoji').value = '';
   document.getElementById('f-time').value = '';
+  document.getElementById('f-servings').value = '2';
   document.getElementById('f-veg').value = 'false';
   document.getElementById('f-note').value = '';
   document.getElementById('f-source').value = '';
@@ -1106,8 +1190,13 @@ function addSectionForm() {
     </div>
 
     <div class="form-field">
-      <label>Ingrédients (un par ligne)</label>
-      <textarea class="section-ingredients" rows="5" placeholder="200 g de farine&#10;190 g de yaourt grec&#10;..."></textarea>
+      <label>Ingrédients</label>
+      <div class="ingredient-actions">
+        <button type="button" class="secondary-btn" onclick="addStructuredIngredient(this)">+ Ingrédient ajustable</button>
+        <button type="button" class="secondary-btn" onclick="addFreeTextIngredient(this)">+ Ingrédient libre</button>
+      </div>
+      <div class="section-ingredients-list" style="display:flex; flex-direction:column; gap:8px; margin-top:8px;"></div>
+      <small class="small-muted">Ingrédient ajustable = quantité recalculée selon les portions. Ingrédient libre = texte simple.</small>
     </div>
 
     <div class="form-field">
@@ -1135,10 +1224,72 @@ function renumberSectionForms() {
   blocks.forEach((block, index) => {
     block.dataset.index = index;
     const title = block.querySelector('h3');
-    if (title) {
-      title.textContent = `Sous-section ${index + 1}`;
-    }
+    if (title) title.textContent = `Sous-section ${index + 1}`;
   });
+}
+
+function addStructuredIngredient(button) {
+  const section = button.closest('.form-field');
+  const list = section.querySelector('.section-ingredients-list');
+  const item = document.createElement('div');
+  item.className = 'ingredient-builder';
+  item.dataset.type = 'structured';
+  item.innerHTML = `
+    <input type="number" step="any" class="ing-qty" placeholder="Qté">
+    <input type="text" class="ing-unit" placeholder="Unité">
+    <input type="text" class="ing-name" placeholder="Nom de l’ingrédient">
+    <button type="button" class="ingredient-remove-btn" onclick="removeIngredientRow(this)">✕</button>
+  `;
+  list.appendChild(item);
+}
+
+function addFreeTextIngredient(button) {
+  const section = button.closest('.form-field');
+  const list = section.querySelector('.section-ingredients-list');
+  const item = document.createElement('div');
+  item.className = 'ingredient-builder full-text';
+  item.dataset.type = 'text';
+  item.innerHTML = `
+    <input type="text" class="ing-text" placeholder="Ex : 1 filet de jus de citron">
+    <button type="button" class="ingredient-remove-btn" onclick="removeIngredientRow(this)">✕</button>
+  `;
+  list.appendChild(item);
+}
+
+function removeIngredientRow(button) {
+  const row = button.closest('.ingredient-builder');
+  if (row) row.remove();
+}
+
+function collectIngredientsFromSection(sectionBlock) {
+  const rows = sectionBlock.querySelectorAll('.section-ingredients-list .ingredient-builder');
+
+  return Array.from(rows).map(row => {
+    const type = row.dataset.type;
+
+    if (type === 'structured') {
+      const quantityValue = row.querySelector('.ing-qty')?.value.trim();
+      const unit = row.querySelector('.ing-unit')?.value.trim() || '';
+      const name = row.querySelector('.ing-name')?.value.trim() || '';
+
+      if (!quantityValue && !unit && !name) return null;
+      if (!name) return null;
+
+      return {
+        quantity: Number(quantityValue || 0),
+        unit,
+        name
+      };
+    }
+
+    if (type === 'text') {
+      const text = row.querySelector('.ing-text')?.value.trim() || '';
+      if (!text) return null;
+      return { text };
+    }
+
+    return null;
+  }).filter(Boolean);
 }
 
 function collectSectionsFromForm() {
@@ -1146,10 +1297,7 @@ function collectSectionsFromForm() {
 
   return Array.from(blocks).map(block => {
     const title = block.querySelector('.section-title')?.value.trim() || '';
-    const ingredients = block.querySelector('.section-ingredients')?.value
-      .split('\n')
-      .map(line => line.trim())
-      .filter(Boolean) || [];
+    const ingredients = collectIngredientsFromSection(block);
     const steps = block.querySelector('.section-steps')?.value
       .split('\n')
       .map(line => line.trim())
@@ -1172,6 +1320,7 @@ function saveNewRecipe() {
     return;
   }
 
+  const servings = Math.max(1, Number(document.getElementById('f-servings').value) || 1);
   const custom = getCustomRecipes();
   const newId = Date.now();
   const colors = ['color-1','color-2','color-3','color-4','color-5','color-6'];
@@ -1183,6 +1332,7 @@ function saveNewRecipe() {
     color: colors[Math.floor(Math.random() * colors.length)],
     tags: Array.from(document.getElementById('f-tags').selectedOptions).map(option => option.value),
     time: document.getElementById('f-time').value.trim(),
+    servings,
     veg: document.getElementById('f-veg').value === 'true',
     sections,
     note: document.getElementById('f-note').value.trim(),
@@ -1212,7 +1362,6 @@ document.getElementById('sort').addEventListener('change', e => {
 document.getElementById('filters').addEventListener('click', e => {
   const btn = e.target.closest('.filter-btn');
   if (!btn) return;
-
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   currentTag = btn.dataset.tag;
