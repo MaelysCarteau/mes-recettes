@@ -191,22 +191,6 @@
     display: block;
   }
 
-  .modal-thumb img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    display: block;
-  }
-
-  .modal-thumb.has-image {
-    width: 72px;
-    height: 72px;
-    border-radius: 12px;
-    overflow: hidden;
-    margin-bottom: 8px;
-    font-size: 0;
-  }
-
   /* RECIPE PAGE */
   .recipe-page {
     max-width: 900px;
@@ -295,47 +279,6 @@
   .no-results span { font-size: 2.5rem; display: block; margin-bottom: 1rem; }
 
   /* MODAL */
-  .modal-overlay {
-    position: fixed; inset: 0; z-index: 200;
-    background: rgba(26,26,24,0.6);
-    backdrop-filter: blur(4px);
-    display: none; align-items: center; justify-content: center;
-    padding: 1rem;
-  }
-  .modal-overlay.open { display: flex; }
-  .modal {
-    background: var(--card);
-    border-radius: 18px;
-    max-width: 620px; width: 100%;
-    max-height: 88vh;
-    overflow-y: auto;
-    animation: slideUp 0.25s ease;
-  }
-  @keyframes slideUp { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }
-  .modal-header {
-    padding: 1.5rem 1.5rem 1rem;
-    border-bottom: 1px solid var(--border);
-    display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem;
-  }
-  .modal-thumb { font-size: 2.5rem; margin-bottom: 4px; }
-  .modal-tag { font-size: 0.7rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.07em; color: var(--accent); margin-bottom: 6px; }
-  .modal-title { font-family: 'Playfair Display', serif; font-size: 1.5rem; line-height: 1.2; color: var(--text); }
-  .modal-close {
-    background: var(--tag-bg); border: none; cursor: pointer;
-    width: 32px; height: 32px; border-radius: 50%; font-size: 1.1rem;
-    display: flex; align-items: center; justify-content: center;
-    color: var(--muted); flex-shrink: 0; margin-top: 4px;
-    transition: background 0.15s;
-  }
-  .modal-close:hover { background: var(--border); }
-  .modal-body { padding: 1.5rem; }
-  .modal-section { margin-bottom: 1.5rem; }
-  .modal-section h3 {
-    font-size: 0.72rem; font-weight: 500; text-transform: uppercase;
-    letter-spacing: 0.08em; color: var(--muted);
-    margin-bottom: 0.75rem; padding-bottom: 6px;
-    border-bottom: 1px solid var(--border);
-  }
   .ingredients-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
   .ingredients-list li {
     font-size: 0.9rem; padding: 6px 10px;
@@ -367,11 +310,6 @@
     transition: background 0.15s;
   }
   .source-link:hover { background: var(--accent-light); }
-
-  /* SCROLLBAR */
-  .modal::-webkit-scrollbar { width: 6px; }
-  .modal::-webkit-scrollbar-track { background: transparent; }
-  .modal::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 </style>
 </head>
 <body>
@@ -430,20 +368,6 @@
   <div class="recipe-page-inner">
     <button class="back-btn" onclick="goBackToList()">← Retour aux recettes</button>
     <div id="recipe-content"></div>
-  </div>
-</div>
-
-<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
-  <div class="modal" id="modal">
-    <div class="modal-header">
-      <div>
-        <div class="modal-thumb" id="m-thumb"></div>
-        <div class="modal-tag" id="m-tag"></div>
-        <div class="modal-title" id="m-title"></div>
-      </div>
-      <button class="modal-close" onclick="closeModalDirect()">✕</button>
-    </div>
-    <div class="modal-body" id="m-body"></div>
   </div>
 </div>
 
@@ -1684,51 +1608,6 @@ function renderPage() {
 }
 
 window.addEventListener('popstate', renderPage);
-
-function openModal(id) {
-  const r = RECIPES.find(x => x.id === id);
-  if (!r) return;
-  document.getElementById('m-thumb').className = 'modal-thumb' + (r.image ? ' has-image' : '');
-  document.getElementById('m-thumb').innerHTML = r.image
-    ? `<img src="${r.image}" alt="${r.title}">`
-    : r.emoji;
-  document.getElementById('m-tag').textContent = r.tag + (r.time ? ' · ' + r.time : '');
-  document.getElementById('m-title').textContent = r.title;
-  const body = document.getElementById('m-body');
-  body.innerHTML = `
-    ${r.video ? `
-      <div class="modal-section">
-        <video controls style="width:100%; border-radius:10px; max-height:280px; background:#000;">
-          <source src="${r.video}" type="video/mp4">
-        </video>
-      </div>
-    ` : ''}
-    <div class="modal-section">
-      <h3>Ingrédients</h3>
-      <ul class="ingredients-list">
-        ${r.ingredients.map(i => `<li>${i}</li>`).join('')}
-      </ul>
-    </div>
-    <div class="modal-section">
-      <h3>Préparation</h3>
-      <ol class="steps-list">
-        ${r.steps.map((s, i) => `<li><span class="step-num">${i+1}</span><span>${s}</span></li>`).join('')}
-      </ol>
-      ${r.note ? `<div class="modal-note">💡 ${r.note}</div>` : ''}
-    </div>
-    ${r.source ? `<a href="${r.source}" target="_blank" class="source-link">↗ Voir le post Instagram original</a>` : ''}
-  `;
-  document.getElementById('modal-overlay').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeModal(e) {
-  if (e.target === document.getElementById('modal-overlay')) closeModalDirect();
-}
-function closeModalDirect() {
-  document.getElementById('modal-overlay').classList.remove('open');
-  document.body.style.overflow = '';
-}
 
 document.getElementById('search').addEventListener('input', e => {
   currentSearch = e.target.value;
