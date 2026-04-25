@@ -153,6 +153,14 @@
   .card-thumb.color-5 { background: #F5E8E8; }
   .card-thumb.color-6 { background: #E8F5F2; }
   .card-body { padding: 14px 16px; }
+
+  /* Tags multiples sur la carte */
+  .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 6px;
+  }
   .card-tag {
     display: inline-block;
     font-size: 0.68rem;
@@ -160,8 +168,13 @@
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: var(--accent);
-    margin-bottom: 6px;
   }
+  .card-tag + .card-tag::before {
+    content: '·';
+    margin-right: 4px;
+    color: var(--border);
+  }
+
   .card-title {
     font-family: 'Playfair Display', serif;
     font-size: 1rem;
@@ -169,7 +182,7 @@
     margin-bottom: 10px;
     color: var(--text);
   }
-  .card-meta { display: flex; align-items: center; gap: 8px; }
+  .card-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
   .meta-pill {
     font-size: 0.72rem;
     padding: 3px 9px;
@@ -233,13 +246,23 @@
     border-bottom: 1px solid var(--border);
   }
 
+  /* Tags multiples sur la page recette */
+  .recipe-page-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 8px;
+  }
   .recipe-page-tag {
+    display: inline-block;
     font-size: 0.75rem;
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--accent);
-    margin-bottom: 8px;
+    background: var(--accent-light);
+    padding: 3px 10px;
+    border-radius: 20px;
   }
 
   .recipe-page-title {
@@ -388,6 +411,9 @@
 </div>
 
 <script>
+// ─── DONNÉES ──────────────────────────────────────────────────────────────────
+// Chaque recette accepte désormais un tableau `tags` (multi-valeurs).
+// Le premier tag du tableau est considéré comme le tag "principal" (affiché en premier).
 const RECIPES = [
   {
     id: 1,
@@ -395,7 +421,7 @@ const RECIPES = [
     emoji: "🥟",
     image: "images/recette-1.png",
     color: "color-4",
-    tag: "Salade",
+    tags: ["Salade", "Rapide"],
     veg: false,
     time: "20 min",
     source: "https://www.instagram.com/reel/DXHsbSMiAlq/",
@@ -431,7 +457,7 @@ const RECIPES = [
     emoji: "🥔",
     image: "images/recette-2.png",
     color: "color-2",
-    tag: "Salade",
+    tags: ["Salade", "Végétarien"],
     veg: true,
     time: "35 min",
     source: "https://www.instagram.com/reel/DXPXDxBiDMS/",
@@ -459,7 +485,7 @@ const RECIPES = [
     emoji: "🍝",
     image: "images/recette-3.png",
     color: "color-1",
-    tag: "Plat",
+    tags: ["Plat", "Végétarien"],
     veg: true,
     time: "25 min",
     source: "https://www.instagram.com/reel/DXR_8SZCA-2/",
@@ -486,7 +512,7 @@ const RECIPES = [
     emoji: "🌿",
     image: "images/recette-4.png",
     color: "color-2",
-    tag: "Plat",
+    tags: ["Plat", "Végétarien", "Rapide"],
     veg: true,
     time: "20 min",
     source: "https://www.instagram.com/reel/DWPHnmtiFBb/",
@@ -521,7 +547,7 @@ const RECIPES = [
     emoji: "🍛",
     image: "images/recette-5.png",
     color: "color-5",
-    tag: "Plat",
+    tags: ["Plat", "Végétarien"],
     veg: true,
     time: "40 min",
     source: "https://www.instagram.com/reel/DW6rcaRITFR/",
@@ -554,7 +580,7 @@ const RECIPES = [
     emoji: "🌿",
     image: "images/recette-6.png",
     color: "color-2",
-    tag: "Plat",
+    tags: ["Plat", "Végétarien"],
     veg: true,
     time: "Variable",
     source: "https://www.instagram.com/reel/DW02IlSDDS8/",
@@ -579,7 +605,7 @@ const RECIPES = [
     emoji: "🧇",
     image: "images/recette-7.png",
     color: "color-2",
-    tag: "Plat",
+    tags: ["Plat", "Végétarien"],
     veg: true,
     time: "20 min",
     source: "https://www.instagram.com/reel/DWcalQcCLEA/",
@@ -610,7 +636,7 @@ const RECIPES = [
     emoji: "🫓",
     image: "images/recette-8.png",
     color: "color-1",
-    tag: "Rapide",
+    tags: ["Rapide", "Végétarien"],
     veg: true,
     time: "15 min",
     source: "https://www.instagram.com/reel/DTIQkc5DBnk/",
@@ -633,7 +659,7 @@ const RECIPES = [
     emoji: "🍔",
     image: "images/recette-9.png",
     color: "color-1",
-    tag: "Rapide",
+    tags: ["Rapide", "Végétarien"],
     veg: true,
     time: "45 min",
     source: "https://www.instagram.com/reel/DU3YVoljNI8/",
@@ -657,7 +683,7 @@ const RECIPES = [
     emoji: "🍕",
     image: "images/recette-10.png",
     color: "color-5",
-    tag: "Rapide",
+    tags: ["Rapide", "Végétarien"],
     veg: true,
     time: "30 min",
     source: "https://www.instagram.com/reel/DWWz1o6jART/",
@@ -680,7 +706,7 @@ const RECIPES = [
     emoji: "🌯",
     image: "images/recette-11.png",
     color: "color-2",
-    tag: "Rapide",
+    tags: ["Rapide", "Végétarien"],
     veg: true,
     time: "30 min",
     source: "https://www.instagram.com/reel/DT-o_3fjNqS/",
@@ -706,7 +732,7 @@ const RECIPES = [
     emoji: "🫓",
     image: "images/recette-12.png",
     color: "color-1",
-    tag: "Végétarien",
+    tags: ["Végétarien", "Plat"],
     veg: true,
     time: "40 min",
     source: "https://www.instagram.com/reel/DV3Iq_CIb3N/",
@@ -736,7 +762,7 @@ const RECIPES = [
     emoji: "🥞",
     image: "images/recette-13.png",
     color: "color-1",
-    tag: "Rapide",
+    tags: ["Rapide", "Végétarien", "Dessert"],
     veg: true,
     time: "15 min",
     source: "https://www.instagram.com/reel/DWRd-9HsSrq/",
@@ -759,7 +785,7 @@ const RECIPES = [
     emoji: "🍕",
     image: "images/recette-14.png",
     color: "color-5",
-    tag: "Végétarien",
+    tags: ["Végétarien", "Plat"],
     veg: true,
     time: "35 min",
     source: "https://www.instagram.com/reel/DVipBKhjIHO/",
@@ -786,7 +812,7 @@ const RECIPES = [
     emoji: "🍱",
     image: "images/recette-15.png",
     color: "color-4",
-    tag: "Plat",
+    tags: ["Salade", "Plat"],
     veg: false,
     time: "25 min",
     source: "https://www.instagram.com/reel/DWZSxM9uaWD/",
@@ -813,7 +839,7 @@ const RECIPES = [
     emoji: "🥬",
     image: "images/recette-16.png",
     color: "color-2",
-    tag: "Végétarien",
+    tags: ["Végétarien", "Plat"],
     veg: true,
     time: "35 min",
     source: "https://www.instagram.com/reel/DWMcIY1jJe_/",
@@ -842,7 +868,7 @@ const RECIPES = [
     emoji: "🍜",
     image: "images/recette-17.png",
     color: "color-4",
-    tag: "Plat",
+    tags: ["Plat", "Rapide"],
     veg: false,
     time: "20 min",
     source: "https://www.instagram.com/reel/DV_pnDuDPnR/",
@@ -876,7 +902,7 @@ const RECIPES = [
     emoji: "🍡",
     image: "images/recette-18.png",
     color: "color-1",
-    tag: "Plat",
+    tags: ["Plat", "Entrée / Apéro"],
     veg: false,
     time: "1h",
     source: "https://www.instagram.com/reel/DWL4c9KDH-5/",
@@ -910,7 +936,7 @@ const RECIPES = [
     emoji: "🥚",
     image: "images/recette-19.png",
     color: "color-1",
-    tag: "Rapide",
+    tags: ["Rapide", "Végétarien"],
     veg: true,
     time: "15 min",
     source: "https://www.instagram.com/reel/DUjE_lyAmeo/",
@@ -939,7 +965,7 @@ const RECIPES = [
     emoji: "🥗",
     image: "images/recette-20.png",
     color: "color-6",
-    tag: "Salade",
+    tags: ["Salade", "Végétarien"],
     veg: true,
     time: "45 min",
     source: "https://www.instagram.com/reel/DWMQeTfo_6O/",
@@ -967,7 +993,7 @@ const RECIPES = [
     emoji: "🍜",
     image: "images/recette-21.png",
     color: "color-4",
-    tag: "Plat",
+    tags: ["Plat", "Végétarien"],
     veg: true,
     time: "30 min",
     source: "https://www.instagram.com/reel/DV_jEVBiNEM/",
@@ -1002,7 +1028,7 @@ const RECIPES = [
     emoji: "🍅",
     image: "images/recette-22.png",
     color: "color-5",
-    tag: "Soupe",
+    tags: ["Soupe", "Végétarien"],
     veg: true,
     time: "35 min",
     source: "https://www.instagram.com/reel/DWJKUphDCVj/",
@@ -1032,7 +1058,7 @@ const RECIPES = [
     emoji: "💚",
     image: "images/recette-23.png",
     color: "color-2",
-    tag: "Végétarien",
+    tags: ["Végétarien", "Plat"],
     veg: true,
     time: "40 min",
     source: "https://www.instagram.com/reel/DWLvIcsjNRe/",
@@ -1059,7 +1085,7 @@ const RECIPES = [
     emoji: "🥦",
     image: "images/recette-24.png",
     color: "color-2",
-    tag: "Végétarien",
+    tags: ["Végétarien", "Plat"],
     veg: true,
     time: "50 min",
     source: "https://www.instagram.com/reel/DO2-GQhjBZ-/",
@@ -1089,7 +1115,7 @@ const RECIPES = [
     emoji: "🥚",
     image: "images/recette-25.png",
     color: "color-5",
-    tag: "Entrée / Apéro",
+    tags: ["Entrée / Apéro"],
     veg: false,
     time: "20 min + marinade",
     source: "https://www.instagram.com/reel/DVrothpjE10/",
@@ -1121,7 +1147,7 @@ const RECIPES = [
     emoji: "🌱",
     image: "images/recette-26.png",
     color: "color-2",
-    tag: "Végétarien",
+    tags: ["Végétarien", "Rapide"],
     veg: true,
     time: "30 min",
     source: "https://www.instagram.com/reel/DWMfZtSNs8a/",
@@ -1150,7 +1176,7 @@ const RECIPES = [
     emoji: "🍄",
     image: "images/recette-27.png",
     color: "color-1",
-    tag: "Quiche / Tarte",
+    tags: ["Quiche / Tarte", "Végétarien"],
     veg: true,
     time: "40 min",
     source: "https://www.instagram.com/reel/DV8-DVHjUkt/",
@@ -1176,7 +1202,7 @@ const RECIPES = [
     emoji: "🍎",
     image: "images/recette-28.png",
     color: "color-5",
-    tag: "Dessert",
+    tags: ["Dessert", "Végétarien"],
     veg: true,
     time: "1h",
     source: "https://www.instagram.com/reel/DVwKq-ON7Qf/",
@@ -1207,7 +1233,7 @@ const RECIPES = [
     emoji: "🥚",
     image: "images/recette-29.png",
     color: "color-3",
-    tag: "Entrée / Apéro",
+    tags: ["Entrée / Apéro", "Végétarien"],
     veg: true,
     time: "30 min + 3h marinade",
     source: "https://www.instagram.com/reel/DV1UP0EtTKr/",
@@ -1236,7 +1262,7 @@ const RECIPES = [
     emoji: "🩷",
     image: "images/recette-30.png",
     color: "color-3",
-    tag: "Entrée / Apéro",
+    tags: ["Entrée / Apéro", "Végétarien", "Rapide"],
     veg: true,
     time: "15 min",
     source: "https://www.instagram.com/reel/DVZD5KpiInt/",
@@ -1265,7 +1291,7 @@ const RECIPES = [
     emoji: "🥗",
     image: "images/recette-31.png",
     color: "color-1",
-    tag: "Salade",
+    tags: ["Salade", "Plat"],
     veg: false,
     time: "45 min",
     source: "https://www.instagram.com/reel/DVgwYSrjbT-/",
@@ -1294,7 +1320,7 @@ const RECIPES = [
     emoji: "🥦",
     image: "images/recette-32.png",
     color: "color-2",
-    tag: "Végétarien",
+    tags: ["Végétarien", "Plat"],
     veg: true,
     time: "30 min",
     source: "https://www.instagram.com/reel/DVeGenIjNkW/",
@@ -1321,7 +1347,7 @@ const RECIPES = [
     emoji: "🍅",
     image: "images/recette-33.png",
     color: "color-5",
-    tag: "Quiche / Tarte",
+    tags: ["Quiche / Tarte", "Végétarien"],
     veg: true,
     time: "55 min",
     source: "https://www.instagram.com/reel/DO2-GQhjBZ-/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==",
@@ -1352,7 +1378,7 @@ const RECIPES = [
     emoji: "🧡",
     image: "images/recette-34.jpg",
     color: "color-1",
-    tag: "Quiche / Tarte",
+    tags: ["Quiche / Tarte", "Végétarien"],
     veg: true,
     time: "1h30",
     source: "https://www.instagram.com/reel/DVrothpjE10/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==",
@@ -1366,7 +1392,7 @@ const RECIPES = [
     steps: [
       "Préchauffer le four à 180°C.",
       "Cuire la patate douce (30-40 min au four côté chair). Récupérer 400 g de chair.",
-      "Mélanger avec l'œuf, la farine et le fromage.", 
+      "Mélanger avec l'œuf, la farine et le fromage.",
       "Étaler dans un moule. Cuire 25 min à 180°C."
     ]
   },
@@ -1376,7 +1402,7 @@ const RECIPES = [
     emoji: "🌿",
     image: "images/recette-35.png",
     color: "color-6",
-    tag: "Salade",
+    tags: ["Salade", "Végétarien"],
     veg: true,
     time: "35 min",
     source: "https://www.instagram.com/reel/DVwKq-ON7Qf/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==",
@@ -1409,7 +1435,7 @@ const RECIPES = [
     emoji: "🥞",
     image: "images/recette-36.png",
     color: "color-2",
-    tag: "Plat",
+    tags: ["Plat", "Végétarien"],
     veg: true,
     time: "50 min",
     source: "https://www.instagram.com/reel/DV1UP0EtTKr/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==",
@@ -1440,7 +1466,7 @@ const RECIPES = [
     emoji: "🥒",
     image: "images/recette-37.png",
     color: "color-2",
-    tag: "Végétarien",
+    tags: ["Végétarien", "Plat"],
     veg: true,
     time: "30 min",
     source: "https://www.instagram.com/reel/DVZD5KpiInt/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==",
@@ -1463,11 +1489,7 @@ const RECIPES = [
   }
 ];
 
-const colors = ['color-1','color-2','color-3','color-4','color-5','color-6'];
-const tagEmojis = {
-  'Salade': '🥗', 'Plat': '🍽', 'Végétarien': '🌱', 'Soupe': '🍵',
-  'Quiche / Tarte': '🥧', 'Dessert': '🍮', 'Entrée / Apéro': '🥚', 'Rapide': '⚡'
-};
+// ─── LOGIQUE ──────────────────────────────────────────────────────────────────
 
 let currentTag = 'Toutes';
 let currentSearch = '';
@@ -1475,19 +1497,13 @@ let currentSort = 'default';
 
 function getTimeInMinutes(timeStr) {
   if (!timeStr) return Infinity;
-
   const str = timeStr.toLowerCase();
-
   if (str.includes('variable')) return Infinity;
-
   let total = 0;
-
   const hourMatch = str.match(/(\d+)\s*h/);
   const minMatch = str.match(/(\d+)\s*min/);
-
   if (hourMatch) total += parseInt(hourMatch[1]) * 60;
   if (minMatch) total += parseInt(minMatch[1]);
-
   return total || Infinity;
 }
 
@@ -1496,42 +1512,37 @@ function renderGrid() {
   const noRes = document.getElementById('no-results');
   const info = document.getElementById('results-info');
   const q = currentSearch.toLowerCase();
+
   let filtered = RECIPES.filter(r => {
-    const matchTag = currentTag === 'Toutes' || r.tag === currentTag || (currentTag === 'Végétarien' && r.veg);
+    // Le filtre vérifie si le tag actif est présent dans le tableau tags[]
+    const matchTag = currentTag === 'Toutes' || r.tags.includes(currentTag);
     const matchSearch = !q || r.title.toLowerCase().includes(q) || r.ingredients.join(' ').toLowerCase().includes(q);
     return matchTag && matchSearch;
   });
 
   filtered.sort((a, b) => {
-    if (currentSort === 'az') {
-      return a.title.localeCompare(b.title, 'fr', { sensitivity: 'base' });
-    }
-
-    if (currentSort === 'za') {
-      return b.title.localeCompare(a.title, 'fr', { sensitivity: 'base' });
-    }
-
-    if (currentSort === 'time-asc') {
-      return getTimeInMinutes(a.time) - getTimeInMinutes(b.time);
-    }
-
-    if (currentSort === 'time-desc') {
-      return getTimeInMinutes(b.time) - getTimeInMinutes(a.time);
-    }
-
+    if (currentSort === 'az') return a.title.localeCompare(b.title, 'fr', { sensitivity: 'base' });
+    if (currentSort === 'za') return b.title.localeCompare(a.title, 'fr', { sensitivity: 'base' });
+    if (currentSort === 'time-asc') return getTimeInMinutes(a.time) - getTimeInMinutes(b.time);
+    if (currentSort === 'time-desc') return getTimeInMinutes(b.time) - getTimeInMinutes(a.time);
     return a.id - b.id;
   });
+
   info.textContent = filtered.length + ' recette' + (filtered.length > 1 ? 's' : '');
   document.getElementById('header-count').textContent = RECIPES.length + ' recettes';
+
   if (!filtered.length) { grid.innerHTML = ''; noRes.style.display = 'block'; return; }
   noRes.style.display = 'none';
+
   grid.innerHTML = filtered.map(r => `
     <div class="card" onclick="openRecipePage(${r.id})">
       <div class="card-thumb ${r.color} ${r.image ? 'has-image' : ''}">
         ${r.image ? `<img src="${r.image}" alt="${r.title}">` : r.emoji}
       </div>
       <div class="card-body">
-        <div class="card-tag">${r.tag}</div>
+        <div class="card-tags">
+          ${r.tags.map(t => `<span class="card-tag">${t}</span>`).join('')}
+        </div>
         <div class="card-title">${r.title}</div>
         <div class="card-meta">
           ${r.time ? `<span class="meta-pill">⏱ ${r.time}</span>` : ''}
@@ -1566,12 +1577,13 @@ function renderRecipePage(id) {
   document.getElementById('recipe-page').style.display = 'block';
 
   const recipeContent = document.getElementById('recipe-content');
-
   recipeContent.innerHTML = `
     ${r.image ? `<img src="${r.image}" alt="${r.title}" class="recipe-hero-image">` : ''}
-    
+
     <div class="recipe-page-header">
-      <div class="recipe-page-tag">${r.tag}</div>
+      <div class="recipe-page-tags">
+        ${r.tags.map(t => `<span class="recipe-page-tag">${t}</span>`).join('')}
+      </div>
       <div class="recipe-page-title">${r.title}</div>
       <div class="recipe-page-meta">
         ${r.time ? `<span class="meta-pill">⏱ ${r.time}</span>` : ''}
