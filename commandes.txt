@@ -1,0 +1,7 @@
+Récupérer une ou plusieurs recette(s) stockée(s) dans le local storage :
+
+    1. Aller sur le site https://maelyscarteau.github.io/mes-recettes/
+    2. Clique droit --> inspecter
+    3. Onglet Console
+    4. console.log(JSON.stringify(JSON.parse(localStorage.getItem('mes-recettes-custom')), null, 2))
+    5. Copier coller dans le json en pensant bien à modifier l'id
