@@ -262,12 +262,29 @@
     "tags": ["Plat", "Végétarien"],
     "veg": true,
     "time": "20 min",
+    "servings": 2,
     "source": "https://www.instagram.com/reel/DWcalQcCLEA/",
     "video": "videos/recette-7.mp4",
-    "ingredients": ["2 grosses courgettes râpées","3 œufs","120 g de farine","50 g de parmesan râpé","10 cl de lait (ou végétal)","1 sachet de levure chimique","Sel, poivre","Ciboulette, basilic, persil","1 càs d'huile d'olive"],
-    "steps": ["Râper les courgettes, les mettre dans un torchon et bien presser pour enlever l'excès d'eau.","Mélanger les œufs, le lait et l'huile d'olive.","Ajouter la farine, la levure, le parmesan, sel et poivre.","Incorporer les courgettes pressées et les herbes ciselées.","Cuire dans le gaufrier 4–5 min jusqu'à ce qu'elles soient bien dorées."],
+    "ingredients": [
+        { "quantity": 2, "unit": "", "name": "grosses courgettes râpées" },
+        { "quantity": 3, "unit": "", "name": "œufs" },
+        { "quantity": 120, "unit": "g", "name": "farine" },
+        { "quantity": 50, "unit": "g", "name": "parmesan râpé" },
+        { "quantity": 10, "unit": "cl", "name": "lait (ou végétal)" },
+        { "quantity": 1, "unit": "sachet", "name": "levure chimique" },
+        { "text": "sel, poivre" },
+        { "text": "ciboulette, basilic, persil" },
+        { "quantity": 1, "unit": "càs", "name": "huile d'olive" }
+    ],
+    "steps": [
+        "Râper les courgettes, les mettre dans un torchon et bien presser pour enlever l'excès d'eau.",
+        "Mélanger les œufs, le lait et l'huile d'olive.",
+        "Ajouter la farine, la levure, le parmesan, sel et poivre.",
+        "Incorporer les courgettes pressées et les herbes ciselées.",
+        "Cuire dans le gaufrier 4–5 min jusqu'à ce qu'elles soient bien dorées."
+    ],
     "note": "Étape cruciale : bien presser les courgettes sinon les gaufres seront molles !"
-  },
+},
   {
     "id": 8,
     "title": "Pain de lentilles corail (type lepinja)",
@@ -277,11 +294,21 @@
     "tags": ["Rapide", "Végétarien"],
     "veg": true,
     "time": "15 min",
+    "servings": 2,
     "source": "https://www.instagram.com/reel/DTIQkc5DBnk/",
     "video": "videos/recette-8.mp4",
-    "ingredients": ["2 tasses de lentilles corail","1/2 tasse d'eau","Sel"],
-    "steps": ["Faire tremper les lentilles corail plusieurs heures (idéalement toute la nuit).","Placer les lentilles égouttées, l'eau et le sel dans un blender.","Mixer jusqu'à obtenir une pâte lisse.","Cuire sur une poêle antiadhésive jusqu'à ce que ce soit doré des deux côtés."]
-  },
+    "ingredients": [
+        { "quantity": 2, "unit": "tasses", "name": "lentilles corail" },
+        { "quantity": 0.5, "unit": "tasse", "name": "eau" },
+        { "text": "sel" }
+    ],
+    "steps": [
+        "Faire tremper les lentilles corail plusieurs heures (idéalement toute la nuit).",
+        "Placer les lentilles égouttées, l'eau et le sel dans un blender.",
+        "Mixer jusqu'à obtenir une pâte lisse.",
+        "Cuire sur une poêle antiadhésive jusqu'à ce que ce soit doré des deux côtés."
+    ]
+},
   {
     "id": 9,
     "title": "Pain burger aux lentilles corail",
@@ -291,11 +318,22 @@
     "tags": ["Rapide", "Végétarien"],
     "veg": true,
     "time": "45 min",
+    "servings": 4,
     "source": "https://www.instagram.com/reel/DU3YVoljNI8/",
-    "ingredients": ["200 g de lentilles corail sèches (tremper quelques heures puis égoutter)","2 œufs (ou 2 càs de graines de lin mixées + 6 càs d'eau)","3 càs de psyllium","Sel"],
-    "steps": ["Laisser tremper les lentilles corail quelques heures ou toute la nuit, puis égoutter.","Mixer ensemble les lentilles, les œufs (ou le substitut), le psyllium et le sel.","Former des boules (environ 4 grosses).","Enfourner à 180°C pendant 35 min."],
+    "ingredients": [
+        { "quantity": 200, "unit": "g", "name": "lentilles corail sèches" },
+        { "quantity": 2, "unit": "", "name": "œufs" },
+        { "quantity": 3, "unit": "càs", "name": "psyllium" },
+        { "text": "sel" }
+    ],
+    "steps": [
+        "Laisser tremper les lentilles corail quelques heures ou toute la nuit, puis égoutter.",
+        "Mixer ensemble les lentilles, les œufs (ou le substitut), le psyllium et le sel.",
+        "Former des boules (environ 4 grosses).",
+        "Enfourner à 180°C pendant 35 min."
+    ],
     "note": "Ultra moelleux ! Sans gluten si on utilise les graines de lin à la place des œufs."
-  },
+},
   {
     "id": 10,
     "title": "Pizza express œuf-cottage cheese",
@@ -305,11 +343,21 @@
     "tags": ["Rapide", "Végétarien"],
     "veg": true,
     "time": "30 min",
+    "servings": 2,
     "source": "https://www.instagram.com/reel/DWWz1o6jART/",
     "video": "videos/recette-10.mp4",
-    "ingredients": ["2 œufs","200 g de cottage cheese","Garnitures au choix (sauce tomate, fromage, légumes…)"],
-    "steps": ["Mélanger les œufs et le cottage cheese.","Étaler la préparation sur une plaque de cuisson.","Enfourner à 180°C pendant 25-30 min.","Garnir la galette/crêpe comme souhaité."]
-  },
+    "ingredients": [
+        { "quantity": 2, "unit": "", "name": "œufs" },
+        { "quantity": 200, "unit": "g", "name": "cottage cheese" },
+        { "text": "garnitures au choix (sauce tomate, fromage, légumes…)" }
+    ],
+    "steps": [
+        "Mélanger les œufs et le cottage cheese.",
+        "Étaler la préparation sur une plaque de cuisson.",
+        "Enfourner à 180°C pendant 25-30 min.",
+        "Garnir la galette/crêpe comme souhaité."
+    ]
+},
   {
     "id": 11,
     "title": "Wraps maison aux épinards",
@@ -319,11 +367,24 @@
     "tags": ["Rapide", "Végétarien"],
     "veg": true,
     "time": "30 min",
+    "servings": 4,
     "source": "https://www.instagram.com/reel/DT-o_3fjNqS/",
     "video": "videos/recette-11.mp4",
-    "ingredients": ["100 g d'épinards frais","100 ml d'eau","2 càs d'huile","3 œufs","200 g de farine","Sel, poivre"],
-    "steps": ["Mixer les épinards avec l'eau jusqu'à obtenir un liquide vert homogène.","Ajouter les œufs, l'huile, la farine, le sel et le poivre. Mélanger jusqu'à obtenir une pâte lisse.","Cuire dans une poêle chaude légèrement huilée, comme des crêpes.","Garnir selon les envies."]
-  },
+    "ingredients": [
+        { "quantity": 100, "unit": "g", "name": "épinards frais" },
+        { "quantity": 100, "unit": "ml", "name": "eau" },
+        { "quantity": 2, "unit": "càs", "name": "huile" },
+        { "quantity": 3, "unit": "", "name": "œufs" },
+        { "quantity": 200, "unit": "g", "name": "farine" },
+        { "text": "sel, poivre" }
+    ],
+    "steps": [
+        "Mixer les épinards avec l'eau jusqu'à obtenir un liquide vert homogène.",
+        "Ajouter les œufs, l'huile, la farine, le sel et le poivre. Mélanger jusqu'à obtenir une pâte lisse.",
+        "Cuire dans une poêle chaude légèrement huilée, comme des crêpes.",
+        "Garnir selon les envies."
+    ]
+},
   {
     "id": 12,
     "title": "Galettes de lentilles corail",
@@ -333,11 +394,28 @@
     "tags": ["Végétarien", "Plat"],
     "veg": true,
     "time": "40 min",
+    "servings": 4,
     "source": "https://www.instagram.com/reel/DV3Iq_CIb3N/",
     "video": "videos/recette-12.mp4",
-    "ingredients": ["300 g de lentilles corail","1 carotte","1 oignon blanc","1 pomme de terre","500 ml d'eau","100 g de fécule de maïs","2 càs de sauce soja","1 càc de paprika fumé","1 càc d'herbes de Provence","Sel et poivre"],
-    "steps": ["Rincer les lentilles. Les cuire avec l'eau, la carotte, l'oignon et la pomme de terre.","Une fois cuit, écraser ou mixer grossièrement.","Ajouter la fécule, la sauce soja, le paprika, les herbes, sel et poivre.","Former des galettes et les cuire à la poêle avec un peu d'huile jusqu'à dorure."]
-  },
+    "ingredients": [
+        { "quantity": 300, "unit": "g", "name": "lentilles corail" },
+        { "quantity": 1, "unit": "", "name": "carotte" },
+        { "quantity": 1, "unit": "", "name": "oignon blanc" },
+        { "quantity": 1, "unit": "", "name": "pomme de terre" },
+        { "quantity": 500, "unit": "ml", "name": "eau" },
+        { "quantity": 100, "unit": "g", "name": "fécule de maïs" },
+        { "quantity": 2, "unit": "càs", "name": "sauce soja" },
+        { "quantity": 1, "unit": "càc", "name": "paprika fumé" },
+        { "quantity": 1, "unit": "càc", "name": "herbes de Provence" },
+        { "text": "sel et poivre" }
+    ],
+    "steps": [
+        "Rincer les lentilles. Les cuire avec l'eau, la carotte, l'oignon et la pomme de terre.",
+        "Une fois cuit, écraser ou mixer grossièrement.",
+        "Ajouter la fécule, la sauce soja, le paprika, les herbes, sel et poivre.",
+        "Former des galettes et les cuire à la poêle avec un peu d'huile jusqu'à dorure."
+    ]
+},
   {
     "id": 13,
     "title": "Pancakes banane-avoine",
