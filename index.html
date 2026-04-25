@@ -207,6 +207,89 @@
     font-size: 0;
   }
 
+  /* RECIPE PAGE */
+  .recipe-page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  .recipe-page-inner {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    overflow: hidden;
+  }
+
+  .back-btn {
+    margin: 1.5rem;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--card);
+    color: var(--text);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+  }
+
+  .back-btn:hover {
+    border-color: var(--accent);
+  }
+
+  .recipe-hero-image {
+    width: 100%;
+    max-height: 380px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .recipe-page-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .recipe-page-tag {
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+
+  .recipe-page-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+
+  .recipe-page-meta {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .recipe-page-body {
+    padding: 1.5rem;
+  }
+
+  .recipe-page-section {
+    margin-bottom: 2rem;
+  }
+
+  .recipe-page-section h3 {
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 0.8rem;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+
   /* NO RESULTS */
   .no-results { text-align: center; padding: 4rem 2rem; color: var(--muted); }
   .no-results span { font-size: 2.5rem; display: block; margin-bottom: 1rem; }
@@ -340,6 +423,13 @@
   <div class="grid" id="grid"></div>
   <div class="no-results" id="no-results" style="display:none">
     <span>🔍</span>Aucune recette trouvée pour cette recherche.
+  </div>
+</div>
+
+<div class="recipe-page" id="recipe-page" style="display:none;">
+  <div class="recipe-page-inner">
+    <button class="back-btn" onclick="goBackToList()">← Retour aux recettes</button>
+    <div id="recipe-content"></div>
   </div>
 </div>
 
@@ -1496,7 +1586,7 @@ function renderGrid() {
   if (!filtered.length) { grid.innerHTML = ''; noRes.style.display = 'block'; return; }
   noRes.style.display = 'none';
   grid.innerHTML = filtered.map(r => `
-    <div class="card" onclick="openModal(${r.id})">
+    <div class="card" onclick="openRecipePage(${r.id})">
       <div class="card-thumb ${r.color} ${r.image ? 'has-image' : ''}">
         ${r.image ? `<img src="${r.image}" alt="${r.title}">` : r.emoji}
       </div>
@@ -1511,6 +1601,89 @@ function renderGrid() {
     </div>
   `).join('');
 }
+
+function openRecipePage(id) {
+  const url = new URL(window.location);
+  url.searchParams.set('id', id);
+  window.history.pushState({}, '', url);
+  renderPage();
+}
+
+function goBackToList() {
+  const url = new URL(window.location);
+  url.searchParams.delete('id');
+  window.history.pushState({}, '', url);
+  renderPage();
+}
+
+function renderRecipePage(id) {
+  const r = RECIPES.find(x => x.id === id);
+  if (!r) return;
+
+  document.querySelector('.hero').style.display = 'none';
+  document.querySelector('.controls').style.display = 'none';
+  document.querySelector('.grid-section').style.display = 'none';
+  document.getElementById('recipe-page').style.display = 'block';
+
+  const recipeContent = document.getElementById('recipe-content');
+
+  recipeContent.innerHTML = `
+    ${r.image ? `<img src="${r.image}" alt="${r.title}" class="recipe-hero-image">` : ''}
+    
+    <div class="recipe-page-header">
+      <div class="recipe-page-tag">${r.tag}</div>
+      <div class="recipe-page-title">${r.title}</div>
+      <div class="recipe-page-meta">
+        ${r.time ? `<span class="meta-pill">⏱ ${r.time}</span>` : ''}
+        ${r.veg ? `<span class="meta-pill veg">🌱 Végé</span>` : ''}
+      </div>
+    </div>
+
+    <div class="recipe-page-body">
+      ${r.video ? `
+        <div class="recipe-page-section">
+          <video controls style="width:100%; border-radius:10px; max-height:360px; background:#000;">
+            <source src="${r.video}" type="video/mp4">
+          </video>
+        </div>
+      ` : ''}
+
+      <div class="recipe-page-section">
+        <h3>Ingrédients</h3>
+        <ul class="ingredients-list">
+          ${r.ingredients.map(i => `<li>${i}</li>`).join('')}
+        </ul>
+      </div>
+
+      <div class="recipe-page-section">
+        <h3>Préparation</h3>
+        <ol class="steps-list">
+          ${r.steps.map((s, i) => `<li><span class="step-num">${i+1}</span><span>${s}</span></li>`).join('')}
+        </ol>
+        ${r.note ? `<div class="modal-note">💡 ${r.note}</div>` : ''}
+      </div>
+
+      ${r.source ? `<a href="${r.source}" target="_blank" class="source-link">↗ Voir le post Instagram original</a>` : ''}
+    </div>
+  `;
+}
+
+function renderPage() {
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get('id');
+
+  if (id) {
+    renderRecipePage(Number(id));
+  } else {
+    document.querySelector('.hero').style.display = '';
+    document.querySelector('.controls').style.display = '';
+    document.querySelector('.grid-section').style.display = '';
+    document.getElementById('recipe-page').style.display = 'none';
+    renderGrid();
+  }
+}
+
+window.addEventListener('popstate', renderPage);
 
 function openModal(id) {
   const r = RECIPES.find(x => x.id === id);
@@ -1578,7 +1751,7 @@ document.getElementById('filters').addEventListener('click', e => {
 
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalDirect(); });
 
-renderGrid();
+renderPage();
 </script>
 </body>
 </html>
