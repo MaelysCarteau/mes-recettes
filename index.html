@@ -36,6 +36,71 @@
   .logo-name { font-family: 'Playfair Display', serif; font-size: 1.2rem; letter-spacing: -0.01em; }
   .header-count { font-size: 0.8rem; color: var(--muted); background: var(--tag-bg); padding: 4px 10px; border-radius: 20px; }
 
+  /* Bouton d'ajout */
+  .add-btn {
+    padding: 8px 16px;
+    background: var(--text);
+    color: var(--bg);
+    border: none;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    cursor: pointer;
+  }
+
+  .overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 200;
+    display: flex; align-items: center; justify-content: center;
+    padding: 1rem;
+  }
+
+  .form-modal {
+    background: var(--card);
+    border-radius: 18px;
+    padding: 2rem;
+    width: 100%; max-width: 560px;
+    max-height: 90vh; overflow-y: auto;
+    display: flex; flex-direction: column; gap: 1rem;
+  }
+
+  .form-modal h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+  }
+
+  .form-field { display: flex; flex-direction: column; gap: 4px; }
+  .form-field label { font-size: 0.8rem; color: var(--muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; }
+  .form-field input,
+  .form-field textarea,
+  .form-field select {
+    padding: 10px 12px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    background: var(--bg);
+    color: var(--text);
+    outline: none;
+    resize: vertical;
+  }
+  .form-field input:focus,
+  .form-field textarea:focus { border-color: var(--accent); }
+
+  .form-actions { display: flex; gap: 8px; justify-content: flex-end; }
+  .btn-cancel {
+    padding: 10px 18px; border: 1.5px solid var(--border);
+    border-radius: 10px; cursor: pointer; background: var(--card);
+    font-family: 'DM Sans', sans-serif;
+  }
+  .btn-save {
+    padding: 10px 18px; border: none;
+    background: var(--text); color: var(--bg);
+    border-radius: 10px; cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+  }
+
   /* HERO */
   .hero {
     padding: 3rem 2rem 2rem;
@@ -361,6 +426,7 @@
     <span class="logo-name">Mes Recettes</span>
   </a>
   <span class="header-count" id="header-count">37 recettes</span>
+  <button class="add-btn" onclick="openAddForm()">+ Ajouter</button>
 </header>
 
 <div class="hero">
@@ -407,6 +473,55 @@
   <div class="recipe-page-inner">
     <button class="back-btn" onclick="goBackToList()">← Retour aux recettes</button>
     <div id="recipe-content"></div>
+  </div>
+</div>
+
+<div class="overlay" id="add-overlay" style="display:none">
+  <div class="form-modal">
+    <h2>Nouvelle recette</h2>
+    <div class="form-field">
+      <label>Titre</label>
+      <input type="text" id="f-title" placeholder="Ex : Ramen au miso">
+    </div>
+    <div class="form-field">
+      <label>Emoji</label>
+      <input type="text" id="f-emoji" placeholder="🍜" maxlength="2">
+    </div>
+    <div class="form-field">
+      <label>Tags (séparés par des virgules)</label>
+      <input type="text" id="f-tags" placeholder="Plat, Végétarien, Rapide">
+    </div>
+    <div class="form-field">
+      <label>Temps</label>
+      <input type="text" id="f-time" placeholder="30 min">
+    </div>
+    <div class="form-field">
+      <label>Végétarien ?</label>
+      <select id="f-veg">
+        <option value="false">Non</option>
+        <option value="true">Oui</option>
+      </select>
+    </div>
+    <div class="form-field">
+      <label>Ingrédients (un par ligne)</label>
+      <textarea id="f-ingredients" rows="5" placeholder="200g de pâtes&#10;2 œufs&#10;..."></textarea>
+    </div>
+    <div class="form-field">
+      <label>Étapes (une par ligne)</label>
+      <textarea id="f-steps" rows="5" placeholder="Cuire les pâtes...&#10;Mélanger..."></textarea>
+    </div>
+    <div class="form-field">
+      <label>Note (optionnel)</label>
+      <input type="text" id="f-note" placeholder="Astuce ou conseil...">
+    </div>
+    <div class="form-field">
+      <label>Lien source (optionnel)</label>
+      <input type="text" id="f-source" placeholder="https://instagram.com/...">
+    </div>
+    <div class="form-actions">
+      <button class="btn-cancel" onclick="closeAddForm()">Annuler</button>
+      <button class="btn-save" onclick="saveNewRecipe()">Enregistrer</button>
+    </div>
   </div>
 </div>
 
@@ -568,6 +683,59 @@ function renderRecipePage(id) {
     </div>
   `;
 }
+
+// Charge les recettes custom depuis localStorage et les fusionne
+const CUSTOM_KEY = 'mes-recettes-custom';
+
+function loadCustomRecipes() {
+  const stored = localStorage.getItem(CUSTOM_KEY);
+  if (!stored) return;
+  const custom = JSON.parse(stored);
+  // Ajoute au début pour les voir en premier
+  RECIPES.unshift(...custom);
+}
+
+function openAddForm() {
+  document.getElementById('add-overlay').style.display = 'flex';
+}
+
+function closeAddForm() {
+  document.getElementById('add-overlay').style.display = 'none';
+}
+
+function saveNewRecipe() {
+  const title = document.getElementById('f-title').value.trim();
+  if (!title) { alert('Le titre est obligatoire !'); return; }
+
+  const stored = localStorage.getItem(CUSTOM_KEY);
+  const custom = stored ? JSON.parse(stored) : [];
+
+  const newId = Date.now(); // ID unique basé sur l'horodatage
+  const colors = ['color-1','color-2','color-3','color-4','color-5','color-6'];
+
+  const recipe = {
+    id: newId,
+    title,
+    emoji: document.getElementById('f-emoji').value || '🍽',
+    color: colors[Math.floor(Math.random() * colors.length)],
+    tags: document.getElementById('f-tags').value.split(',').map(t => t.trim()).filter(Boolean),
+    time: document.getElementById('f-time').value.trim(),
+    veg: document.getElementById('f-veg').value === 'true',
+    ingredients: document.getElementById('f-ingredients').value.split('\n').map(l => l.trim()).filter(Boolean),
+    steps: document.getElementById('f-steps').value.split('\n').map(l => l.trim()).filter(Boolean),
+    note: document.getElementById('f-note').value.trim(),
+    source: document.getElementById('f-source').value.trim(),
+  };
+
+  custom.unshift(recipe);
+  localStorage.setItem(CUSTOM_KEY, JSON.stringify(custom));
+  RECIPES.unshift(recipe);
+
+  closeAddForm();
+  renderGrid();
+}
+
+loadCustomRecipes();
 
 function renderPage() {
   const params = new URLSearchParams(window.location.search);
