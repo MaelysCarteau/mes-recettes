@@ -5,3 +5,4 @@ Récupérer une ou plusieurs recette(s) stockée(s) dans le local storage :
     3. Onglet Console
     4. console.log(JSON.stringify(JSON.parse(localStorage.getItem('mes-recettes-custom')), null, 2))
     5. Copier coller dans le json en pensant bien à modifier l'id
+    6. Supprimer le local storage : localStorage.removeItem('mes-recettes-custom')
